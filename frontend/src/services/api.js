@@ -4,8 +4,8 @@ import axios from 'axios';
 // Helper to ensure URL ends with /api
 // Helper to determine API URL based on environment
 const getBaseUrl = () => {
-  // 1. If we are in production (GitHub Pages, Vercel, etc.), ALWAYS use Render Backend
-  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+  // 1. If deployed on GitHub Pages or any non-local environment, use Render Backend
+  if (window.location.hostname === 'lekhrajmahajan.github.io' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')) {
     return 'https://trustbuy.onrender.com/api';
   }
 
