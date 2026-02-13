@@ -75,7 +75,9 @@ const Navbar = () => {
             e.preventDefault();
             const searchTerm = e.target.search.value;
             // Navigate to ShopPage with search query
-            navigate(`/?search=${encodeURIComponent(searchTerm)}`);
+            if (searchTerm.trim()) {
+              navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
+            }
           }} className="hidden md:flex flex-1 max-w-xl relative">
             <input
               type="text"
@@ -179,7 +181,20 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div className={`md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-xl transition-all duration-300 origin-top ${isOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 h-0 overflow-hidden'}`}>
         <div className="p-4 space-y-4">
-          <input type="text" placeholder="Search..." className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none" />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const searchTerm = e.target.value;
+                if (searchTerm.trim()) {
+                  setIsOpen(false);
+                  navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
+                }
+              }
+            }}
+          />
           <div className="space-y-2">
             <Link to="/" onClick={() => setIsOpen(false)} className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 font-medium">Home</Link>
             <Link to="/" onClick={() => setIsOpen(false)} className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 font-medium">Explore Shop</Link>
