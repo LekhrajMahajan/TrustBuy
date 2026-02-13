@@ -11,7 +11,7 @@ const Footer = () => {
                     {/* 1. Brand & About */}
                     <div className="space-y-4">
                         <Link to="/" className="flex items-center gap-2 group">
-                            <img src="/favicon.svg" alt="Logo" className="w-8 h-8 brightness-0 invert" />
+                            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="Logo" className="w-8 h-8 brightness-0 invert" />
                             <span className="text-2xl font-bold tracking-tight">Trust<span className="text-[#fdc600]">Buy</span></span>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed">

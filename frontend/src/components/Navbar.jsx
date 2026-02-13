@@ -61,7 +61,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex-shrink-0 flex items-center gap-2 group">
             <img
-              src="/favicon.svg"
+              src={`${import.meta.env.BASE_URL}favicon.svg`}
               alt="TrustBuy Shield"
               className="w-10 h-10 group-hover:scale-110 transition-transform duration-200 drop-shadow-sm"
             />
