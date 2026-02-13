@@ -14,7 +14,7 @@ const HeroSection = ({ featuredProduct }) => {
     const scaleImage = useTransform(scrollYProgress, [0, 1], [1, 1.2]); // Scale from 1 to 1.2 as user scrolls
 
     return (
-        <div className="relative w-full h-[600px] bg-gradient-to-r from-slate-900 to-slate-800 overflow-hidden flex items-center justify-center px-4">
+        <div className="relative w-full min-h-[600px] md:h-[600px] py-20 md:py-0 bg-gradient-to-r from-slate-900 to-slate-800 overflow-hidden flex items-center justify-center px-4">
             {/* Background Effect */}
             <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
 
@@ -25,7 +25,7 @@ const HeroSection = ({ featuredProduct }) => {
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-white space-y-6 md:pr-12"
+                    className="text-white space-y-6 md:pr-12 text-center md:text-left"
                 >
                     <div className="inline-block px-4 py-1.5 rounded-full border border-[#fdc600] text-[#fdc600] font-bold text-xs uppercase tracking-widest bg-[#fdc600]/10 backdrop-blur-sm">
                         #1 Best Seller
@@ -37,7 +37,7 @@ const HeroSection = ({ featuredProduct }) => {
                     <p className="text-gray-300 text-lg max-w-md">
                         The all-new {featuredProduct?.name || "Premium Collection"} represents the pinnacle of modern design and performance.
                     </p>
-                    <div className="flex gap-4">
+                    <div className="flex justify-center md:justify-start gap-4">
                         <Link to={featuredProduct ? `/product/${featuredProduct._id}` : "/shop"} className="inline-flex items-center gap-2 px-8 py-4 bg-[#fdc600] text-black font-bold rounded-full hover:bg-yellow-400 transition-all shadow-[0_0_20px_rgba(253,198,0,0.4)] hover:shadow-[0_0_40px_rgba(253,198,0,0.6)] hover:scale-105 active:scale-95">
                             Buy Now <ArrowRight className="w-5 h-5" />
                         </Link>
@@ -238,11 +238,11 @@ const HomePage = () => {
                 <ProductSection title="Trending Fashion" products={fashion} icon={TrendingUp} />
 
                 {/* Banner Strip */}
-                <div className="max-w-7xl mx-auto px-4 py-16">
-                    <div className="w-full h-64 bg-slate-900 rounded-3xl flex items-center justify-between px-12 relative overflow-hidden shadow-2xl group cursor-pointer hover:scale-[1.01] transition-all duration-500">
+                <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
+                    <div className="w-full min-h-[400px] md:min-h-0 md:h-64 bg-slate-900 rounded-3xl flex flex-col md:flex-row items-center justify-between p-8 md:px-12 relative overflow-hidden shadow-2xl group cursor-pointer hover:scale-[1.01] transition-all duration-500">
                         <div className="absolute top-0 right-0 w-96 h-96 bg-[#fdc600] rounded-full blur-[100px] opacity-20 -mr-20 -mt-20 group-hover:opacity-30 transition-opacity"></div>
 
-                        <div className="z-10 text-white max-w-lg">
+                        <div className="z-10 text-white max-w-lg text-center md:text-left">
                             <div className="inline-block px-3 py-1 bg-white/10 rounded text-xs font-bold mb-4 border border-white/10">LIMITED OFFER</div>
                             <h2 className="text-4xl font-extrabold mb-4">Summer Sale is Live!</h2>
                             <p className="text-gray-300 mb-8 text-lg">Get up to <span className="text-[#fdc600] font-bold">50% OFF</span> on premium international brands. Limited time only.</p>
@@ -255,7 +255,7 @@ const HomePage = () => {
                             whileInView={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.8 }}
                             src="https://pngimg.com/d/running_shoes_PNG5816.png"
-                            className="hidden lg:block w-96 h-auto -rotate-12 drop-shadow-2xl z-10 group-hover:-rotate-6 transition-transform duration-700"
+                            className="block w-64 md:w-96 h-auto -rotate-12 drop-shadow-2xl z-10 group-hover:-rotate-6 transition-transform duration-700 mt-8 md:mt-0"
                         />
                     </div>
                 </div>
