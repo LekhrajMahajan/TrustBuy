@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Dark Yellow / Amber Theme - Hex #fdc600 */
+    --primary: 47 100% 50%; 
+    --primary-foreground: 0 0% 0%; /* Black text on yellow looks better than white often, but user didn't specify. Standard is black on bright yellow. */
+
+    /* Off-white Background - Hex #f7f4f3 */
+    --background: 15 20% 96%;
+    --foreground: 222.2 84% 4.9%;
+
+    --secondary: 15 20% 96%; /* Matches background */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 38 92% 50%; /* Amber 500 */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 38 92% 50%; /* Focus Ring also Yellow */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    /* ... define dark mode similarly if needed, but user asked for "White and Dark Yellow" primarily */
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
