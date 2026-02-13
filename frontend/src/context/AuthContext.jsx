@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // --- LOGIN ACTION ---
+
   const login = async (email, password) => {
     try {
       const { data } = await api.post('/users/login', { email, password });
@@ -55,7 +56,11 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       console.error("Login Error:", error);
-      return { success: false, message: error.response?.data?.message || 'Login failed' };
+      let message = error.response?.data?.message || 'Login failed';
+      if (error.message === 'Network Error') {
+        message = 'Cannot connect to server. Please check your internet or try again later.';
+      }
+      return { success: false, message };
     }
   };
 
