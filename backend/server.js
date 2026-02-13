@@ -16,7 +16,16 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 app.use(cors());
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI)
+// Database Connection
+let mongoUri = process.env.MONGO_URI;
+
+// FIX: Handle unencoded '@' in password if present
+if (mongoUri && mongoUri.includes('Lekhraj@086')) {
+  console.log('⚠️ Auto-correcting unencoded password in MONGO_URI...');
+  mongoUri = mongoUri.replace('Lekhraj@086', 'Lekhraj%40086');
+}
+
+mongoose.connect(mongoUri)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.error(err));
 
