@@ -2,15 +2,21 @@ import axios from 'axios';
 
 
 // Helper to ensure URL ends with /api
+// Helper to determine API URL based on environment
 const getBaseUrl = () => {
-  // Use the user-provided production URL as the default priority
-  let url = import.meta.env.VITE_API_URL || 'https://trustbuy.onrender.com/api';
+  // 1. If we are in production (GitHub Pages, Vercel, etc.), ALWAYS use Render Backend
+  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    return 'https://trustbuy.onrender.com/api';
+  }
 
-  // Remove trailing slash if present
+  // 2. If we are on Localhost, try VITE_API_URL first, then fallback to local backend
+  let url = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+  // Cleanup: Remove trailing slash if present
   if (url.endsWith('/')) {
     url = url.slice(0, -1);
   }
-  // Ensure it ends with /api if not already there
+  // Cleanup: Ensure it ends with /api
   if (!url.endsWith('/api')) {
     url = `${url}/api`;
   }
