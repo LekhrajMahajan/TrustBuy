@@ -98,7 +98,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
       </Link>
 
       {/* 2. Content Section */}
-      <div className="p-5 flex flex-col flex-grow">
+      <div className="p-3 md:p-5 flex flex-col flex-grow">
 
         {/* Title */}
         <div className="mb-2">
@@ -144,7 +144,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className={`w-full py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${product.stock === 0
+                className={`w-full py-2 md:py-2.5 rounded-lg font-bold text-xs md:text-sm flex items-center justify-center gap-1.5 md:gap-2 transition-all active:scale-95 ${product.stock === 0
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-md hover:shadow-lg'
                   }`}

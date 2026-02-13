@@ -11,12 +11,12 @@ const ProductDetailsPage = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  
+
   // Review Form State
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  
+
   const { addToCart } = useCart();
   const { user } = useAuth();
 
@@ -73,21 +73,21 @@ const ProductDetailsPage = () => {
       <Loader2 className="w-8 h-8 animate-spin text-slate-900" />
     </div>
   );
-  
+
   if (!product) return <div className="text-center py-20">Product not found</div>;
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* --- Top Section: Product Details --- */}
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${cardClass} p-8 mb-12`}>
-          
+
           {/* Left: Image */}
-          <div className="flex justify-center items-center bg-gray-50 rounded-lg p-6 h-[400px] border border-slate-100">
-            <img 
-              src={product.image || 'https://via.placeholder.com/500'} 
-              alt={product.name} 
+          <div className="flex justify-center items-center bg-gray-50 rounded-lg p-6 h-[300px] md:h-[400px] border border-slate-100">
+            <img
+              src={product.image || 'https://via.placeholder.com/500'}
+              alt={product.name}
               className="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300 drop-shadow-sm"
             />
           </div>
@@ -135,14 +135,13 @@ const ProductDetailsPage = () => {
 
             {/* Actions */}
             <div className="pt-8 mt-4 border-t border-slate-100">
-              <button 
-                onClick={handleAddToCart} 
+              <button
+                onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className={`w-full py-4 rounded-md font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] ${
-                  product.stock > 0 
-                  ? 'bg-slate-900 text-white hover:bg-slate-800' 
-                  : 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                }`}
+                className={`w-full py-4 rounded-md font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] ${product.stock > 0
+                    ? 'bg-slate-900 text-white hover:bg-slate-800'
+                    : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                  }`}
               >
                 <ShoppingCart className="w-5 h-5" />
                 {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
@@ -153,11 +152,11 @@ const ProductDetailsPage = () => {
 
         {/* --- Bottom Section: Reviews --- */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Reviews List */}
           <div className={`lg:col-span-2 ${cardClass} p-8 h-fit`}>
             <h2 className="text-xl font-bold text-slate-900 mb-6">Customer Reviews</h2>
-            
+
             {product.reviews.length === 0 ? (
               <div className="text-center py-10 text-slate-500">
                 <p>No reviews yet. Be the first to share your thoughts!</p>
@@ -196,16 +195,16 @@ const ProductDetailsPage = () => {
             <div className={`${cardClass} p-8 sticky top-24`}>
               <h3 className="text-lg font-bold text-slate-900 mb-1">Write a Review</h3>
               <p className="text-sm text-slate-500 mb-6">Share your experience with this product.</p>
-              
+
               {user ? (
                 <form onSubmit={submitReviewHandler} className="space-y-5">
-                  
+
                   {/* Rating Select */}
                   <div>
                     <label className={labelClass}>Rating</label>
                     <div className="relative">
-                      <select 
-                        value={rating} 
+                      <select
+                        value={rating}
                         onChange={(e) => setRating(e.target.value)}
                         className={`${inputClass} appearance-none cursor-pointer`}
                       >
@@ -218,11 +217,11 @@ const ProductDetailsPage = () => {
                       <ChevronDown className="absolute right-3 top-3 h-4 w-4 text-slate-400 pointer-events-none" />
                     </div>
                   </div>
-                  
+
                   {/* Comment Textarea */}
                   <div>
                     <label className={labelClass}>Comment</label>
-                    <textarea 
+                    <textarea
                       rows="4"
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}

@@ -40,7 +40,7 @@ const CartPage = () => {
           {/* --- LEFT: Cart Items List --- */}
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item) => (
-              <div key={item._id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex gap-4 sm:gap-6 items-center">
+              <div key={item._id} className="bg-white p-3 md:p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
                 {/* Image */}
                 <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
