@@ -3,7 +3,9 @@ import axios from 'axios';
 
 // Helper to ensure URL ends with /api
 const getBaseUrl = () => {
-  let url = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  // Use the user-provided production URL as the default priority
+  let url = import.meta.env.VITE_API_URL || 'https://trustbuy.onrender.com/api';
+
   // Remove trailing slash if present
   if (url.endsWith('/')) {
     url = url.slice(0, -1);
