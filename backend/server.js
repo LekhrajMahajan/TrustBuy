@@ -1,4 +1,7 @@
 // backend/server.js
+// FIX: Force Node to use Google DNS to resolve MongoDB SRV records (fixes ECONNREFUSED on some networks)
+require('dns').setServers(['8.8.8.8']);
+
 const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');

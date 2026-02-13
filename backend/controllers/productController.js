@@ -124,13 +124,16 @@ const updateProduct = async (req, res) => {
         return res.status(401).json({ message: 'Not authorized to update this product' });
       }
 
-      product.name = name || product.name;
-      product.basePrice = basePrice || product.basePrice;
-      product.currentPrice = basePrice || product.currentPrice; // Update current price too roughly
-      product.description = description || product.description;
-      product.category = category || product.category;
-      product.stock = stock || product.stock;
-      product.image = image || product.image;
+      if (name) product.name = name;
+      if (basePrice !== undefined && basePrice !== '') {
+        product.basePrice = Number(basePrice);
+        // Auto-update currentPrice if basePrice changes (simplistic logic, can be refined)
+        product.currentPrice = Number(basePrice);
+      }
+      if (description) product.description = description;
+      if (category) product.category = category;
+      if (stock !== undefined && stock !== '') product.stock = Number(stock);
+      if (image) product.image = image;
 
       const updatedProduct = await product.save();
       res.json(updatedProduct);
