@@ -15,6 +15,7 @@ const users = [
     email: 'seller@example.com',
     password: hash('123'),
     role: 'seller',
+    sellerStats: { status: 'active', businessName: 'Demo Store' }
   },
   {
     name: 'John Buyer',

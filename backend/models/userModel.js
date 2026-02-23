@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     required: true
   },
 
-  // ✅ Profile Fields (Optional)
+  // Profile Fields (Optional)
   address: { type: String, default: '' },
   city: { type: String, default: '' },
   pincode: { type: String, default: '' },
@@ -23,7 +23,11 @@ const userSchema = mongoose.Schema({
   sellerStats: {
     rating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
-    trustScore: { type: Number, default: 50 }
+    trustScore: { type: Number, default: 50 },
+    status: { type: String, enum: ['active', 'suspended', 'pending'], default: 'pending' }, // Seller Status
+    businessName: { type: String, default: '' },
+    gstin: { type: String, default: '' },
+    pickupAddress: { type: String, default: '' }
   }
 }, {
   timestamps: true // This ensures created/updated times are saved

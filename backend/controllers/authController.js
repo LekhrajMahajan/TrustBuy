@@ -9,12 +9,12 @@ const generateToken = (id) => {
 // @desc    Register a new user (Buyer or Seller)
 // @route   POST /api/users
 const registerUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role, address, city, pincode, phone } = req.body;
 
   const userExists = await User.findOne({ email });
   if (userExists) return res.status(400).json({ message: 'User already exists' });
 
-  const user = await User.create({ name, email, password, role });
+  const user = await User.create({ name, email, password, role, address, city, pincode, phone });
 
   if (user) {
     res.status(201).json({
@@ -22,6 +22,10 @@ const registerUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      address: user.address,
+      city: user.city,
+      pincode: user.pincode,
+      phone: user.phone,
       token: generateToken(user._id),
     });
   } else {
@@ -41,6 +45,7 @@ const authUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role, // VITAL: Sends role to frontend
+      sellerStats: user.sellerStats, // Send Seller Status
       token: generateToken(user._id),
     });
   } else {

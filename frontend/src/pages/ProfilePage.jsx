@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { userService } from '../services/api';
-import { User, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
@@ -9,22 +9,14 @@ const ProfilePage = () => {
   const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    birthDate: '',
-    address: '',
-    city: '',
-    pincode: ''
+    name: '', email: '', phone: '', birthDate: '', address: '', city: '', pincode: ''
   });
 
-  // 1. Fetch User Data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const data = await userService.getProfile();
         const formattedDate = data.birthDate ? new Date(data.birthDate).toISOString().split('T')[0] : '';
-
         setFormData({
           name: data.name || '',
           email: data.email || '',
@@ -34,200 +26,113 @@ const ProfilePage = () => {
           city: data.city || '',
           pincode: data.pincode || ''
         });
-      } catch (error) {
-        console.error("Error fetching profile", error);
-      } finally {
-        setLoading(false);
-      }
+      } catch (error) { console.error(error); } finally { setLoading(false); }
     };
     fetchProfile();
   }, []);
 
-
-
-  // 2. Handle Update
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
       await userService.updateProfile(formData);
       setEditing(false);
-      toast.success("Profile Updated Successfully!", {
-        description: "Your changes have been saved."
-      });
+      toast.success("Profile Updated");
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to update profile.", {
-        description: "Please check your network and try again."
-      });
+      toast.error("Update Failed");
     } finally {
       setSaving(false);
     }
   };
 
-  // --- Custom Styles to Mimic the Design ---
-  const fieldClass = "space-y-2";
-  const labelClass = "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-slate-900";
-  const inputClass = "flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-slate-100 disabled:text-slate-500 transition-all";
-  const descriptionClass = "text-[0.8rem] text-slate-500";
+  // Minimalist "Underline" Input Style
+  const inputClass = "w-full border-b border-gray-200 dark:border-gray-700 py-3 text-sm focus:border-black dark:border-white focus:outline-none bg-transparent placeholder:text-gray-300 transition-colors disabled:opacity-50 disabled:border-transparent";
+  const labelClass = "block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-1";
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Loader2 className="w-8 h-8 animate-spin text-slate-900" />
-    </div>
-  );
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900"><Loader2 className="w-6 h-6 animate-spin" /></div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-12 flex justify-center px-4">
-      <div className="w-full max-w-lg bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+    <div className="min-h-screen bg-white dark:bg-gray-900 pt-24 pb-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div className="mb-8 flex items-center gap-3 border-b border-slate-100 pb-6">
-          <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
-            <User className="h-6 w-6 text-slate-600" />
+        <div className="grid md:grid-cols-12 gap-12">
+
+          {/* Left: Sidebar / Header */}
+          <div className="md:col-span-4">
+            <h1 className="text-4xl font-extrabold uppercase tracking-tighter mb-4">Account<br />Settings</h1>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">Manage your personal data and shipping preferences.</p>
+
+            <div className="hidden md:block space-y-2">
+              <div className="w-12 h-1 bg-[#fdc600]"></div>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900">Profile Settings</h1>
-            <p className="text-sm text-slate-500">Manage your personal information.</p>
+
+          {/* Right: The Form */}
+          <div className="md:col-span-8">
+            <form onSubmit={handleSubmit} className="space-y-10">
+
+              {/* Section 1: Identity */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-bold uppercase tracking-tight border-b border-black dark:border-white pb-2 mb-6">Personal Details</h3>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div>
+                    <label className={labelClass}>Full Name</label>
+                    <input type="text" disabled={!editing} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClass} />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Email Address</label>
+                    <input type="email" disabled value={formData.email} className={`${inputClass} text-gray-400 cursor-not-allowed`} />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Phone Number</label>
+                    <input type="tel" disabled={!editing} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className={inputClass} />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Date of Birth</label>
+                    <input type="date" disabled={!editing} value={formData.birthDate} onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })} className={inputClass} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 2: Shipping */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-bold uppercase tracking-tight border-b border-black dark:border-white pb-2 mb-6">Shipping Address</h3>
+                <div>
+                  <label className={labelClass}>Address Line</label>
+                  <input type="text" disabled={!editing} value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} className={inputClass} placeholder="Street, Sector, Apt..." />
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div>
+                    <label className={labelClass}>City</label>
+                    <input type="text" disabled={!editing} value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} className={inputClass} />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Pincode</label>
+                    <input type="text" disabled={!editing} value={formData.pincode} onChange={(e) => setFormData({ ...formData, pincode: e.target.value })} className={inputClass} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="pt-8 flex justify-end gap-4">
+                {!editing ? (
+                  <button type="button" onClick={() => setEditing(true)} className="px-8 py-3 bg-black dark:bg-gray-800 text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-all">
+                    Edit Profile
+                  </button>
+                ) : (
+                  <>
+                    <button type="button" onClick={() => setEditing(false)} className="px-6 py-3 bg-transparent text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-widest hover:text-black dark:hover:text-white transition-all">
+                      Cancel
+                    </button>
+                    <button type="submit" disabled={saving} className="px-8 py-3 bg-[#fdc600] text-black dark:text-black text-xs font-bold uppercase tracking-widest hover:bg-yellow-500 transition-all">
+                      {saving ? 'Saving...' : 'Save Changes'}
+                    </button>
+                  </>
+                )}
+              </div>
+            </form>
           </div>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-
-          {/* Field Group */}
-          <div className="grid gap-6">
-
-            {/* Name */}
-            <div className={fieldClass}>
-              <label htmlFor="form-name" className={labelClass}>Name</label>
-              <input
-                id="form-name"
-                type="text"
-                disabled={!editing}
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Your Name"
-                className={inputClass}
-              />
-            </div>
-
-            {/* Email */}
-            <div className={fieldClass}>
-              <label htmlFor="form-email" className={labelClass}>Email</label>
-              <input
-                id="form-email"
-                type="email"
-                disabled
-                value={formData.email}
-                className={inputClass}
-              />
-              <p className={descriptionClass}>
-                We'll never share your email with anyone.
-              </p>
-            </div>
-
-            {/* Grid: Phone & DOB */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className={fieldClass}>
-                <label htmlFor="form-phone" className={labelClass}>Phone</label>
-                <input
-                  id="form-phone"
-                  type="tel"
-                  disabled={!editing}
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="+91 98765..."
-                  className={inputClass}
-                />
-              </div>
-
-              <div className={fieldClass}>
-                <label htmlFor="form-dob" className={labelClass}>Birth Date</label>
-                <input
-                  id="form-dob"
-                  type="date"
-                  disabled={!editing}
-                  value={formData.birthDate}
-                  onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
-                  className={inputClass}
-                />
-              </div>
-            </div>
-
-            {/* Address */}
-            <div className={fieldClass}>
-              <label htmlFor="form-address" className={labelClass}>Address</label>
-              <input
-                id="form-address"
-                type="text"
-                disabled={!editing}
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                placeholder="123 Main St"
-                className={inputClass}
-              />
-            </div>
-
-            {/* Grid: City & Pincode */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className={fieldClass}>
-                <label htmlFor="form-city" className={labelClass}>City</label>
-                <input
-                  id="form-city"
-                  type="text"
-                  disabled={!editing}
-                  value={formData.city}
-                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className={inputClass}
-                />
-              </div>
-
-              <div className={fieldClass}>
-                <label htmlFor="form-pincode" className={labelClass}>Pincode</label>
-                <input
-                  id="form-pincode"
-                  type="text"
-                  disabled={!editing}
-                  value={formData.pincode}
-                  onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
-                  className={inputClass}
-                />
-              </div>
-            </div>
-
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
-            {!editing ? (
-              <button
-                type="button"
-                onClick={() => setEditing(true)}
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 h-10 px-4 py-2"
-              >
-                Edit Profile
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  onClick={() => setEditing(false)}
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 h-10 px-4 py-2"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-slate-900 text-slate-50 hover:bg-slate-900/90 h-10 px-4 py-2"
-                >
-                  {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                  {saving ? 'Saving...' : 'Save Changes'}
-                </button>
-              </>
-            )}
-          </div>
-
-        </form>
       </div>
     </div>
   );

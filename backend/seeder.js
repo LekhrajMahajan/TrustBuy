@@ -1,10 +1,8 @@
-// backend/seeder.js
-// FIX: Force Google DNS to resolve MongoDB SRV records
 require('dns').setServers(['8.8.8.8']);
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const users = require('./data/users'); // We will create this next
-const products = require('./data/products'); // We will create this next
+const users = require('./data/users');
+const products = require('./data/products');
 const User = require('./models/userModel');
 const Product = require('./models/productModel');
 const Order = require('./models/orderModel');
@@ -15,7 +13,7 @@ dotenv.config();
 // Connect to DB directly for this script
 let mongoUri = process.env.MONGO_URI;
 
-// FIX: Handle unencoded '@' in password if present
+// Handle unencoded '@' in password if present
 if (mongoUri && mongoUri.includes('Lekhraj@086')) {
   console.log('⚠️ Auto-correcting unencoded password in MONGO_URI (Seeder)...');
   mongoUri = mongoUri.replace('Lekhraj@086', 'Lekhraj%40086');

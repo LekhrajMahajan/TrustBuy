@@ -6,7 +6,7 @@ import { CartProvider } from './context/CartContext';
 import { Toaster } from 'sonner';
 
 // Pages
-import HomePage from './pages/HomePage'; // ✅ New Home Page
+import HomePage from './pages/HomePage'; // New Home Page
 import ShopPage from './pages/ShopPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -19,6 +19,13 @@ import ProductDetailsPage from './pages/ProductDetailsPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import OrderTrackingPage from './pages/OrderTrackingPage';
 import ProfilePage from './pages/ProfilePage';
+import Phones from './pages/Shop/Phones';
+import Laptops from './pages/Shop/Laptops';
+import Audio from './pages/Shop/Audio';
+import MensWear from './pages/Shop/MensWear';
+import WomensWear from './pages/Shop/WomensWear';
+import Accessories from './pages/Shop/Accessories';
+import NewArrivals from './pages/Shop/NewArrivals';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -31,9 +38,9 @@ const ProtectedRoute = ({ children }) => {
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f11] text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
       <CartProvider>
-        {/* ✅ Add Toaster here (top-center aligns with your request) */}
+        {/* Add Toaster here (top-center aligns with your request) */}
         <Toaster
           position="top-center"
           richColors
@@ -48,11 +55,18 @@ const App = () => {
 
         <Navbar />
         <Routes>
-          {/* ✅ New Home Page */}
+          {/* New Home Page */}
           <Route path="/" element={<HomePage />} />
 
-          {/* ✅ Full Shop Page */}
+          {/* Full Shop Page */}
           <Route path="/shop" element={<ShopPage />} />
+          <Route path="/shop/phones" element={<Phones />} />
+          <Route path="/shop/laptops" element={<Laptops />} />
+          <Route path="/shop/audio" element={<Audio />} />
+          <Route path="/shop/mens-wear" element={<MensWear />} />
+          <Route path="/shop/womens-wear" element={<WomensWear />} />
+          <Route path="/shop/accessories" element={<Accessories />} />
+          <Route path="/shop/new-arrivals" element={<NewArrivals />} />
 
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

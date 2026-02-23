@@ -1,26 +1,40 @@
 const Order = require('../models/orderModel');
 
 const addOrderItems = async (req, res) => {
-  const { orderItems, shippingAddress, paymentMethod, totalPrice, paymentResult, isPaid } = req.body;
+  try {
+    const { orderItems, shippingAddress, paymentMethod, totalPrice, paymentResult, isPaid } = req.body;
 
-  if (orderItems && orderItems.length === 0) {
-    res.status(400).json({ message: 'No order items' });
-    return;
+    console.log("Creating Order - User:", req.user ? req.user._id : "No User");
+    console.log("Order Data:", { orderItems, totalPrice, paymentMethod });
+
+    if (!req.user) {
+      res.status(401).json({ message: 'User not authenticated in controller' });
+      return;
+    }
+
+    if (orderItems && orderItems.length === 0) {
+      res.status(400).json({ message: 'No order items' });
+      return;
+    }
+
+    const order = new Order({
+      orderItems,
+      user: req.user._id,
+      shippingAddress,
+      paymentMethod,
+      paymentResult,
+      totalPrice,
+      isPaid: isPaid ?? false,
+      paidAt: isPaid ? Date.now() : null,
+    });
+
+    const createdOrder = await order.save();
+    console.log("Order Created:", createdOrder._id);
+    res.status(201).json(createdOrder);
+  } catch (error) {
+    console.error("Error in addOrderItems:", error);
+    res.status(500).json({ message: error.message, stack: error.stack });
   }
-
-  const order = new Order({
-    orderItems,
-    user: req.user._id,
-    shippingAddress,
-    paymentMethod,
-    paymentResult,
-    totalPrice,
-    isPaid: isPaid ?? false,
-    paidAt: isPaid ? Date.now() : null,
-  });
-
-  const createdOrder = await order.save();
-  res.status(201).json(createdOrder);
 };
 
 const getMyOrders = async (req, res) => {

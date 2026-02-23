@@ -17,6 +17,7 @@ const getUserProfile = async (req, res) => {
       pincode: user.pincode,
       birthDate: user.birthDate,
       phone: user.phone,
+      sellerStats: user.sellerStats,
     });
   } else {
     res.status(404);
@@ -40,7 +41,7 @@ const updateUserProfile = async (req, res) => {
       user.city = req.body.city || user.city;
       user.pincode = req.body.pincode || user.pincode;
 
-      // ✅ Fix: Handle empty date string safely
+      // Fix: Handle empty date string safely
       if (req.body.birthDate !== undefined) {
         user.birthDate = req.body.birthDate === '' ? null : req.body.birthDate;
       }
@@ -75,4 +76,30 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-module.exports = { getUserProfile, updateUserProfile };
+// @desc    Register as Seller (Submit Details)
+// @route   PUT /api/users/seller/register
+// @access  Private
+const registerSeller = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      user.sellerStats = {
+        ...user.sellerStats,
+        businessName: req.body.businessName,
+        gstin: req.body.gstin,
+        pickupAddress: req.body.pickupAddress,
+        status: 'pending' // Force status to pending for review
+      };
+
+      const updatedUser = await user.save();
+      res.json({ message: 'Seller Application Submitted', sellerStats: updatedUser.sellerStats });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+module.exports = { getUserProfile, updateUserProfile, registerSeller };

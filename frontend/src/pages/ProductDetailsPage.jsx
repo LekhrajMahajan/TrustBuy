@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { productService } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../hooks/useAuth';
-import { Star, ShoppingCart, Truck, ShieldCheck, User, ChevronDown, Loader2 } from 'lucide-react';
+import { Star, ShoppingCart, Truck, ShieldCheck, User, ChevronDown, Loader2, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 
 const ProductDetailsPage = () => {
@@ -62,10 +62,22 @@ const ProductDetailsPage = () => {
     });
   };
 
+  const handleBuyNow = () => {
+    if (!user) {
+      toast.error("Login Required", {
+        description: "You must be logged in to buy items.",
+        action: { label: "Login Now", onClick: () => navigate('/login') },
+      });
+      return;
+    }
+    addToCart(product);
+    navigate('/payment');
+  };
+
   // --- REUSABLE STYLES (Shadcn Lookalike) ---
-  const cardClass = "bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden";
+  const cardClass = "bg-white dark:bg-gray-900 rounded-xl border border-slate-200 shadow-sm overflow-hidden";
   const labelClass = "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-slate-900 mb-2 block";
-  const inputClass = "flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all";
+  const inputClass = "flex h-10 w-full rounded-md border border-slate-200 bg-white dark:bg-gray-900 px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all";
   const buttonClass = "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-slate-900 text-slate-50 hover:bg-slate-900/90 h-10 px-4 py-2 w-full";
 
   if (loading) return (
@@ -77,14 +89,14 @@ const ProductDetailsPage = () => {
   if (!product) return <div className="text-center py-20">Product not found</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* --- Top Section: Product Details --- */}
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${cardClass} p-8 mb-12`}>
 
           {/* Left: Image */}
-          <div className="flex justify-center items-center bg-gray-50 rounded-lg p-6 h-[300px] md:h-[400px] border border-slate-100">
+          <div className="flex justify-center items-center bg-gray-50 dark:bg-gray-950 rounded-lg p-6 h-[300px] md:h-[400px] border border-slate-100">
             <img
               src={product.image || 'https://via.placeholder.com/500'}
               alt={product.name}
@@ -125,7 +137,7 @@ const ProductDetailsPage = () => {
               {/* Badges */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 text-sm font-medium text-slate-700 bg-slate-50 p-3 rounded-md border border-slate-100">
-                  <Truck className="w-5 h-5 text-slate-900" /> Fast Delivery
+                  <Truck className="w-5 h-5 text-slate-900" /> Delivery in 2-3 Days
                 </div>
                 <div className="flex items-center gap-3 text-sm font-medium text-slate-700 bg-slate-50 p-3 rounded-md border border-slate-100">
                   <ShieldCheck className="w-5 h-5 text-slate-900" /> 1 Year Warranty
@@ -134,18 +146,28 @@ const ProductDetailsPage = () => {
             </div>
 
             {/* Actions */}
-            <div className="pt-8 mt-4 border-t border-slate-100">
+            <div className="pt-8 mt-4 border-t border-slate-100 flex gap-4">
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className={`w-full py-4 rounded-md font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] ${product.stock > 0
-                    ? 'bg-slate-900 text-white hover:bg-slate-800'
-                    : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                className={`flex-1 py-4 rounded-md font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] ${product.stock > 0
+                  ? 'bg-slate-900 text-white dark:text-white hover:bg-slate-800'
+                  : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                   }`}
               >
                 <ShoppingCart className="w-5 h-5" />
                 {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
               </button>
+
+              {product.stock > 0 && (
+                <button
+                  onClick={handleBuyNow}
+                  className="flex-1 py-4 rounded-md font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] bg-[#fdc600] text-black dark:text-black hover:bg-yellow-400"
+                >
+                  <Zap className="w-5 h-5 fill-black" />
+                  Buy Now
+                </button>
+              )}
             </div>
           </div>
         </div>

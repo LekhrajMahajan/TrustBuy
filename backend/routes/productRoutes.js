@@ -9,12 +9,12 @@ const {
   deleteProduct,
   updateProduct
 } = require('../controllers/productController');
-const { protect, seller } = require('../middleware/authMiddleware'); // ✅ Import Auth Middleware
+const { protect, seller } = require('../middleware/authMiddleware'); // Import Auth Middleware
 
 // Public Routes
 router.route('/').get(getProducts);
 
-// ✅ Private Seller Routes
+// Private Seller Routes
 // ध्यान दें: 'myproducts' वाला route '/:id' से ऊपर होना चाहिए
 router.route('/myproducts').get(protect, seller, getMyProducts);
 router.route('/').post(protect, seller, createProduct);

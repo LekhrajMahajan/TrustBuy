@@ -21,7 +21,7 @@ class ErrorBoundary extends React.Component {
                 <div className="p-4 bg-red-50 border border-red-200 rounded text-red-800 m-4">
                     <h2 className="text-lg font-bold">Something went wrong rendering this component.</h2>
                     <p className="font-mono text-xs mt-2">{this.state.error && this.state.error.toString()}</p>
-                    <details className="mt-2 text-xs whitespace-pre-wrap text-gray-600">
+                    <details className="mt-2 text-xs whitespace-pre-wrap text-gray-600 dark:text-gray-400">
                         {this.state.errorInfo && this.state.errorInfo.componentStack}
                     </details>
                 </div>

@@ -2,87 +2,46 @@ import React, { useEffect, useState } from 'react';
 import { productService } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import { useSearchParams } from 'react-router-dom';
-import { Filter, X, Zap, TrendingUp, ShieldCheck, ChevronDown, SlidersHorizontal, Check } from 'lucide-react';
+import { X, ChevronDown, SlidersHorizontal, Check } from 'lucide-react';
 
-// ✅ Shadcn-style Slider Component (Custom Implementation using Tailwind)
-const ShadcnSlider = ({ value, min, max, onChange, step = 1 }) => {
-  const percentage = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
-
-  return (
-    <div className="relative flex w-full touch-none select-none items-center h-6 cursor-pointer group">
-      {/* Track */}
-      <div className="relative h-2 w-full grow overflow-hidden rounded-full bg-slate-100">
-        <div
-          className="absolute h-full bg-[#fdc600] transition-all"
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
-
-      {/* Visual Thumb */}
-      <div
-        className="absolute h-5 w-5 rounded-full border-2 border-[#fdc600] bg-white ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shadow-md group-hover:scale-110"
-        style={{ left: `calc(${percentage}% - 10px)` }}
-      />
-
-      {/* Invisible Input for Interaction */}
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={onChange}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-      />
-    </div>
-  );
-};
-
-const ShopPage = () => {
+const ShopPage = ({ initialCategory, initialSort }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isSortOpen, setIsSortOpen] = useState(false); // ✅ Added for Custom Dropdown
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
-  const searchCategory = searchParams.get('category') || 'all'; // ✅ Support Category Param
+  const searchCategory = initialCategory || searchParams.get('category') || 'all';
 
-  // Filter States
-  const [sortOption, setSortOption] = useState('trending');
+  const searchSort = initialSort || searchParams.get('sort') || 'trending';
+  const [sortOption, setSortOption] = useState(searchSort);
+
   const [filters, setFilters] = useState({
     priceRange: [0, 100000],
     trustScore: 'all',
     rating: 0,
     availability: 'all',
-    category: searchCategory, // ✅ Init with URL param
-    trustBuyExtra: []
+    category: searchCategory,
   });
 
-  // Infinite Scroll States
+  // Infinite Scroll
   const ITEMS_PER_PAGE = 8;
   const [page, setPage] = useState(1);
 
-  // Reset Page on Filter Change
-  useEffect(() => {
-    setPage(1);
-  }, [displayedProducts]);
+  useEffect(() => { setPage(1); }, [displayedProducts]);
 
-  // Infinite Scroll Listener
   useEffect(() => {
     const handleScroll = () => {
       if (window.innerHeight + document.documentElement.scrollTop + 100 >= document.documentElement.offsetHeight) {
-        if (displayedProducts.length > page * ITEMS_PER_PAGE) {
-          setPage(prev => prev + 1);
-        }
+        if (displayedProducts.length > page * ITEMS_PER_PAGE) setPage(prev => prev + 1);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [page, displayedProducts]);
 
-  const categories = ['all', ...new Set(allProducts.map(p => p.category))];
+  const categories = ['all', 'Fashion', ...new Set(allProducts.map(p => p.category))];
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -90,297 +49,146 @@ const ShopPage = () => {
         const data = await productService.getAllProducts();
         setAllProducts(data);
 
-        // ✅ Apply Initial Filters (Search + Category)
-        let filtered = data;
+        let result = data;
 
+        // 1. Filter by Search Query
         if (searchQuery) {
-          filtered = filtered.filter(p =>
-            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.category.toLowerCase().includes(searchQuery.toLowerCase())
+          const lowerQuery = searchQuery.toLowerCase();
+          result = result.filter(p =>
+            p.name.toLowerCase().includes(lowerQuery) ||
+            p.category.toLowerCase().includes(lowerQuery)
           );
         }
 
+        // 2. Filter by Category (Case Insensitive)
         if (searchCategory && searchCategory !== 'all') {
-          filtered = filtered.filter(p => p.category.toLowerCase() === searchCategory.toLowerCase());
-          // Update local state too
+          if (searchCategory.toLowerCase() === 'fashion') {
+            result = result.filter(p => ['jackets', 'denim', "women's wear", 'shoes', 'bags'].includes(p.category.toLowerCase()));
+          } else {
+            result = result.filter(p => p.category.toLowerCase() === searchCategory.toLowerCase());
+          }
           setFilters(prev => ({ ...prev, category: searchCategory }));
         }
 
-        setDisplayedProducts(filtered);
-      } catch (err) {
-        console.error("Failed to load products", err);
-      } finally {
-        setLoading(false);
-      }
+        // 3. Apply Sorting
+        const sortKey = searchSort;
+        setSortOption(sortKey); // Sync state with URL
+
+        if (sortKey === 'price-low-high') result.sort((a, b) => (a.currentPrice || 0) - (b.currentPrice || 0));
+        else if (sortKey === 'price-high-low') result.sort((a, b) => (a.currentPrice || 0) - (b.currentPrice || 0)); // Fixed sorting logic (descending)
+        else if (sortKey === 'newest') result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        else result.sort((a, b) => (b.sales || 0) - (a.sales || 0)); // Trending
+
+        setDisplayedProducts(result);
+      } catch (err) { console.error(err); } finally { setLoading(false); }
     };
     loadProducts();
-  }, [searchQuery, searchCategory]); // ✅ Re-run on URL change
+  }, [searchQuery, searchCategory, searchSort]);
 
-  // Filter Logic
-  // Filter Logic
   const applyFilters = (latestSortOption = sortOption) => {
     let result = [...allProducts];
 
-    // 1. Filter by Category
+    // Case Insensitive Category Match
     if (filters.category !== 'all') {
-      result = result.filter(p => p.category === filters.category);
+      if (filters.category.toLowerCase() === 'fashion') {
+        result = result.filter(p => ['jackets', 'denim', "women's wear", 'shoes', 'bags'].includes(p.category.toLowerCase()));
+      } else {
+        result = result.filter(p => p.category.toLowerCase() === filters.category.toLowerCase());
+      }
     }
 
-    // 2. Filter by Price Range
-    result = result.filter(p => {
-      const price = p.currentPrice !== undefined ? p.currentPrice : (p.basePrice || 0);
-      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-    });
+    result = result.filter(p => (p.currentPrice || p.basePrice) >= filters.priceRange[0] && (p.currentPrice || p.basePrice) <= filters.priceRange[1]);
 
-    // 3. Filter by Trust Score
-    if (filters.trustScore !== 'all') {
-      result = result.filter(p => {
-        const score = p.user?.sellerStats?.trustScore || 50;
-        if (filters.trustScore === '90-100') return score >= 90;
-        if (filters.trustScore === '70-89') return score >= 70 && score < 90;
-        if (filters.trustScore === 'below-70') return score < 70;
-        return true;
-      });
-    }
-
-    // 4. Other Filters
-    if (filters.rating > 0) result = result.filter(p => (p.rating || 0) >= filters.rating);
-    if (filters.availability === 'in-stock') result = result.filter(p => p.stock > 0);
-
-    // 5. Sorting Logic
     const sortKey = latestSortOption;
-    if (sortKey === 'price-low-high') {
-      result.sort((a, b) => (a.currentPrice || 0) - (b.currentPrice || 0));
-    } else if (sortKey === 'price-high-low') {
-      result.sort((a, b) => (b.currentPrice || 0) - (a.currentPrice || 0));
-    } else if (sortKey === 'trust-score') {
-      result.sort((a, b) => (b.user?.sellerStats?.trustScore || 0) - (a.user?.sellerStats?.trustScore || 0));
-    } else if (sortKey === 'newest') {
-      result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    } else {
-      // Trending / Default
-      result.sort((a, b) => (b.sales || 0) - (a.sales || 0));
-    }
+    if (sortKey === 'price-low-high') result.sort((a, b) => (a.currentPrice || 0) - (b.currentPrice || 0));
+    else if (sortKey === 'price-high-low') result.sort((a, b) => (b.currentPrice || 0) - (a.currentPrice || 0)); // Fixed sorting (descending)
+    else if (sortKey === 'newest') result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    else result.sort((a, b) => (b.sales || 0) - (a.sales || 0)); // Trending
 
     setDisplayedProducts(result);
     setIsFilterOpen(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-12 relative">
+    <div className="min-h-screen bg-white dark:bg-gray-900 pt-24 pb-12 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-gray-200 pb-6">
+        {/* 1. Header (Minimalist) */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 pb-6 border-b border-black dark:border-white">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Marketplace</h1>
-            <p className="text-gray-500 mt-2 text-sm">
-              {searchQuery ? `Search results for "${searchQuery}"` : `Discover ${displayedProducts.length} premium products with dynamic pricing.`}
+            <h1 className="text-5xl font-extrabold uppercase tracking-tighter text-black dark:text-white">
+              {searchCategory !== 'all' ? searchCategory : 'Collection'}
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm font-medium">
+              {searchQuery ? `Results for "${searchQuery}"` : `Showing ${displayedProducts.length} curated items.`}
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* ✅ Custom Dropdown for Full Customization */}
-            <div className="relative hidden md:block z-20">
-              <button
-                onClick={() => setIsSortOpen(!isSortOpen)}
-                onBlur={() => setTimeout(() => setIsSortOpen(false), 200)}
-                className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:border-[#fdc600] transition-colors focus:ring-2 focus:ring-[#fdc600]"
-              >
-                <span className="text-gray-400">Sort by:</span>
-                <span className="font-semibold text-slate-900">
-                  {sortOption === 'trending' && 'Trending'}
-                  {sortOption === 'price-low-high' && 'Price: Low to High'}
-                  {sortOption === 'price-high-low' && 'Price: High to Low'}
-                  {sortOption === 'trust-score' && 'Seller Trust'}
-                  {sortOption === 'newest' && 'Newest Arrivals'}
-                </span>
-                <ChevronDown className={`w-4 h-4 ml-1 text-gray-400 transition-transform ${isSortOpen ? 'rotate-180' : ''}`} />
+          <div className="flex items-center gap-6">
+            {/* Text-Based Sort Trigger */}
+            <div className="relative z-20">
+              <button onClick={() => setIsSortOpen(!isSortOpen)} className="flex items-center gap-1 text-sm font-bold uppercase tracking-widest hover:text-[#fdc600] transition-colors">
+                Sort: <span className="border-b border-black dark:border-white pb-0.5">{sortOption.replace(/-/g, ' ')}</span> <ChevronDown className="w-3 h-3" />
               </button>
 
-              {/* Dropdown Menu */}
               {isSortOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
-                  {[
-                    { val: 'trending', label: 'Trending' },
-                    { val: 'price-low-high', label: 'Price: Low to High' },
-                    { val: 'price-high-low', label: 'Price: High to Low' },
-                    { val: 'trust-score', label: 'Seller Trust' },
-                    { val: 'newest', label: 'Newest Arrivals' }
-                  ].map((opt) => (
-                    <button
-                      key={opt.val}
-                      onClick={() => {
-                        setSortOption(opt.val);
-                        applyFilters(opt.val); // Apply sort immediately
-                        setIsSortOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors flex items-center justify-between group ${sortOption === opt.val
-                        ? 'bg-[#fdc600] text-black'
-                        : 'text-gray-700 hover:bg-[#fdc600] hover:text-black'
-                        }`}
-                    >
-                      {opt.label}
-                      {sortOption === opt.val && <Check className="w-4 h-4" />}
+                <div className="absolute left-0 md:left-auto md:right-0 mt-4 w-48 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-xl py-2 z-50 animate-in fade-in zoom-in-95">
+                  {['trending', 'price-low-high', 'price-high-low', 'newest'].map((opt) => (
+                    <button key={opt} onClick={() => { setSortOption(opt); applyFilters(opt); setIsSortOpen(false); }} className="block w-full text-left px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 dark:bg-gray-950">
+                      {opt.replace(/-/g, ' ')}
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            <button
-              onClick={() => setIsFilterOpen(true)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#fdc600] text-black rounded-lg shadow-sm font-semibold hover:bg-[#e5b300] transition-all active:scale-95"
-            >
-              <SlidersHorizontal className="w-4 h-4" /> Filters
+            <button onClick={() => setIsFilterOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-gray-800 text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-all">
+              <SlidersHorizontal className="w-3 h-3" /> Filter
             </button>
           </div>
         </div>
 
-        {/* Content */}
+        {/* 2. Grid */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center h-96">
-            <div className="w-16 h-16 border-4 border-slate-100 border-t-slate-900 rounded-full animate-spin mb-4"></div>
-            <p className="text-gray-500 font-medium animate-pulse">Loading live prices...</p>
-          </div>
+          <div className="flex justify-center h-64 items-center"><div className="w-8 h-8 border-2 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div></div>
         ) : displayedProducts.length === 0 ? (
-          <div className="text-center py-24 bg-white rounded-2xl shadow-sm border border-gray-100">
-            <div className="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Filter className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900">No products found</h3>
-            <p className="text-gray-500 mt-1 max-w-sm mx-auto">
-              {searchQuery
-                ? `No products found matching "${searchQuery}". Try a different term.`
-                : 'Try adjusting your filters or price range to see more results.'}
-            </p>
-            <button onClick={() => {
-              setFilters({ priceRange: [0, 100000], trustScore: 'all', rating: 0, availability: 'all', category: 'all', trustBuyExtra: [] });
-              setSortOption('trending');
-              setDisplayedProducts(allProducts);
-            }} className="mt-6 text-[#fdc600] font-bold hover:underline">Clear all filters</button>
+          <div className="text-center py-32 bg-gray-50 dark:bg-gray-950">
+            <h3 className="text-2xl font-bold uppercase text-gray-400">No Matches Found</h3>
+            <button onClick={() => { setFilters({ priceRange: [0, 100000], trustScore: 'all', rating: 0, availability: 'all', category: 'all' }); setSortOption('trending'); setDisplayedProducts(allProducts); }} className="mt-4 text-sm font-bold border-b border-black dark:border-white pb-1 hover:text-[#fdc600] hover:border-[#fdc600]">Reset Catalog</button>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
               {displayedProducts.slice(0, page * ITEMS_PER_PAGE).map(product => (
                 <ProductCard key={product._id} product={product} />
               ))}
             </div>
-
-            {/* Loading Indicator for Infinite Scroll */}
-            {displayedProducts.length > page * ITEMS_PER_PAGE && (
-              <div className="py-12 flex justify-center">
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-8 h-8 border-4 border-[#fdc600] border-t-transparent rounded-full animate-spin"></div>
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Loading More</span>
-                </div>
-              </div>
-            )}
-
-            {/* End of List Message */}
-            {displayedProducts.length > 0 && displayedProducts.length <= page * ITEMS_PER_PAGE && (
-              <div className="py-12 text-center">
-                <p className="text-gray-400 text-sm">You've reached the end of the list.</p>
-              </div>
-            )}
+            {displayedProducts.length > page * ITEMS_PER_PAGE && <div className="py-12 flex justify-center text-xs font-bold uppercase tracking-widest text-gray-400 animate-pulse">Loading More...</div>}
           </>
         )}
       </div>
 
-      {/* Filter Sidebar (Sheet Design) */}
-      <div className={`fixed inset-0 z-50 transform transition-transform duration-300 ease-in-out ${isFilterOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onClick={() => setIsFilterOpen(false)}></div>
+      {/* 3. Filter Sidebar (Clean & Sharp) */}
+      <div className={`fixed inset-0 z-50 transform transition-transform duration-500 ease-custom-ease ${isFilterOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute inset-0 bg-black dark:bg-gray-800/20 backdrop-blur-sm" onClick={() => setIsFilterOpen(false)}></div>
+        <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white dark:bg-gray-900 shadow-2xl flex flex-col">
 
-        <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl overflow-y-auto border-l border-gray-200">
-
-          {/* Header */}
-          <div className="sticky top-0 bg-white px-6 py-5 border-b border-gray-100 flex justify-between items-center z-10">
-            <div>
-              <h2 className="text-lg font-bold text-slate-900">Filters</h2>
-              <p className="text-xs text-gray-500">Refine your product search</p>
-            </div>
-            <button onClick={() => setIsFilterOpen(false)} className="p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-colors">
-              <X className="w-5 h-5" />
-            </button>
+          <div className="px-8 py-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+            <h2 className="text-xl font-bold uppercase tracking-tight">Refine</h2>
+            <button onClick={() => setIsFilterOpen(false)}><X className="w-6 h-6 hover:rotate-90 transition-transform" /></button>
           </div>
 
-          <div className="p-6 space-y-8">
-
-            {/* Price Slider (Shadcn Style) */}
+          <div className="p-8 space-y-10 flex-1 overflow-y-auto">
             <section>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-sm font-semibold text-slate-900">Price Range</h3>
-                <span className="text-xs font-mono font-bold text-black bg-[#fdc600]/20 px-2 py-1 rounded">
-                  ₹0 - ₹{filters.priceRange[1].toLocaleString()}
-                </span>
-              </div>
-
-              {/* ✅ USING CUSTOM SLIDER */}
-              <div className="px-1">
-                <ShadcnSlider
-                  min={0}
-                  max={200000}
-                  step={1000}
-                  value={filters.priceRange[1]}
-                  onChange={(e) => setFilters({ ...filters, priceRange: [0, parseInt(e.target.value)] })}
-                />
-              </div>
-
-              <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium uppercase tracking-wider">
-                <span>Min</span>
-                <span>Max</span>
-              </div>
+              <div className="flex justify-between mb-4"><h3 className="text-xs font-bold uppercase tracking-widest">Price Limit</h3><span className="text-xs font-mono">₹{filters.priceRange[1].toLocaleString()}</span></div>
+              <input type="range" min={0} max={200000} step={1000} value={filters.priceRange[1]} onChange={(e) => setFilters({ ...filters, priceRange: [0, parseInt(e.target.value)] })} className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-black" />
             </section>
 
-            {/* Separator */}
-            <div className="h-px bg-gray-100 w-full"></div>
-
-            {/* Trust Score */}
             <section>
-              <h3 className="text-sm font-semibold text-slate-900 mb-3">Seller Trust</h3>
-              <div className="flex flex-col gap-2">
-                {[
-                  { id: 'all', label: 'All Sellers' },
-                  { id: '90-100', label: 'Highly Trusted (90+)' },
-                  { id: '70-89', label: 'Verified (70-89)' },
-                  { id: 'below-70', label: 'New / Unverified' }
-                ].map((opt) => (
-                  <label key={opt.id} className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-all ${filters.trustScore === opt.id
-                    ? 'border-[#fdc600] bg-[#fdc600]/10'
-                    : 'border-gray-200 hover:border-gray-300'
-                    }`}>
-                    <span className="text-sm font-medium text-slate-700">{opt.label}</span>
-                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${filters.trustScore === opt.id ? 'border-[#fdc600] bg-[#fdc600]' : 'border-gray-300'
-                      }`}>
-                      {filters.trustScore === opt.id && <Check className="w-3 h-3 text-black" />}
-                    </div>
-                    <input type="radio" name="trust" className="hidden"
-                      checked={filters.trustScore === opt.id}
-                      onChange={() => setFilters({ ...filters, trustScore: opt.id })}
-                    />
-                  </label>
-                ))}
-              </div>
-            </section>
-
-            {/* Separator */}
-            <div className="h-px bg-gray-100 w-full"></div>
-
-            {/* Category */}
-            <section>
-              <h3 className="text-sm font-semibold text-slate-900 mb-3">Category</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest mb-4">Category</h3>
               <div className="flex flex-wrap gap-2">
                 {categories.map(cat => (
-                  <button
-                    key={cat}
-                    onClick={() => setFilters({ ...filters, category: cat })}
-                    className={`px-3 py-1.5 rounded-md text-xs font-semibold capitalize border transition-all ${filters.category === cat
-                      ? 'bg-[#fdc600] text-black border-[#fdc600]'
-                      : 'bg-white text-slate-600 border-gray-200 hover:border-gray-300'
-                      }`}
-                  >
+                  <button key={cat} onClick={() => setFilters({ ...filters, category: cat })} className={`px-4 py-2 border text-xs font-bold uppercase tracking-widest transition-all ${filters.category?.toLowerCase() === cat?.toLowerCase() ? 'bg-black dark:bg-gray-800 text-white dark:text-white border-black dark:border-white' : 'bg-transparent text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-black dark:border-white'}`}>
                     {cat}
                   </button>
                 ))}
@@ -388,24 +196,8 @@ const ShopPage = () => {
             </section>
           </div>
 
-          {/* Footer Actions */}
-          <div className="sticky bottom-0 p-6 bg-white border-t border-gray-100 flex gap-4">
-            <button
-              onClick={() => {
-                setFilters({ priceRange: [0, 100000], trustScore: 'all', rating: 0, availability: 'all', category: 'all', trustBuyExtra: [] });
-                setSortOption('trending');
-                setDisplayedProducts(allProducts);
-              }}
-              className="flex-1 py-3 text-slate-600 font-bold hover:bg-gray-50 rounded-lg border border-gray-200 transition-colors text-sm"
-            >
-              Reset Filters
-            </button>
-            <button
-              onClick={applyFilters}
-              className="flex-1 py-3 bg-[#fdc600] text-black rounded-lg font-bold hover:bg-[#e5b300] shadow-lg transition-all active:scale-95 text-sm"
-            >
-              Show Results
-            </button>
+          <div className="p-8 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
+            <button onClick={applyFilters} className="w-full py-4 bg-black dark:bg-gray-800 text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-[#fdc600] hover:text-black dark:hover:text-black transition-all">Apply Filters</button>
           </div>
         </div>
       </div>

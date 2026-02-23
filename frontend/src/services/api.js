@@ -37,12 +37,28 @@ const api = axios.create({
 // Interceptor to add token
 api.interceptors.request.use(
   (config) => {
-    const userInfo = localStorage.getItem('userInfo');
-    if (userInfo) {
-      const parsedUser = JSON.parse(userInfo);
-      if (parsedUser.token) {
-        config.headers.Authorization = `Bearer ${parsedUser.token}`;
+    try {
+      const userInfo = localStorage.getItem('userInfo'); // This is the main one we use in AuthContext
+      const token = localStorage.getItem('token'); // Fallback
+
+      let authToken = null;
+
+      if (userInfo) {
+        const parsedUser = JSON.parse(userInfo);
+        if (parsedUser && parsedUser.token) {
+          authToken = parsedUser.token;
+        }
       }
+
+      if (!authToken && token) {
+        authToken = token;
+      }
+
+      if (authToken) {
+        config.headers.Authorization = `Bearer ${authToken}`;
+      }
+    } catch (error) {
+      console.error("Error in Axios Interceptor:", error);
     }
     return config;
   },
@@ -51,7 +67,7 @@ api.interceptors.request.use(
 
 export const productService = {
   getAllProducts: async () => {
-    // ✅ Add console log to debug response
+    // Add console log to debug response
     try {
       const response = await api.get('/products');
       console.log("API Response (Products):", response.data);
@@ -96,6 +112,19 @@ export const userService = {
   updateProfile: async (userData) => {
     const response = await api.put('/users/profile', userData);
     return response.data;
+  },
+  getUserId: async () => {
+    try {
+      const response = await api.get('/users/profile');
+      return response.data._id;
+    } catch (error) {
+      console.error("Error getting user ID:", error);
+      return null;
+    }
+  },
+  registerSeller: async (sellerData) => {
+    const response = await api.put('/users/seller/register', sellerData);
+    return response.data;
   }
 };
 
@@ -121,6 +150,34 @@ export const adminService = {
   },
   getSellers: async () => {
     const response = await api.get('/admin/sellers');
+    return response.data;
+  },
+  suspendSeller: async (id) => {
+    const response = await api.put(`/admin/seller/${id}/suspend`);
+    return response.data;
+  },
+  verifySeller: async (id) => {
+    const response = await api.put(`/admin/seller/${id}/verify`);
+    return response.data;
+  },
+  approveProduct: async (id) => {
+    const response = await api.put(`/admin/product/${id}/approve`);
+    return response.data;
+  },
+  getAdminProducts: async () => {
+    const response = await api.get('/admin/products');
+    return response.data;
+  },
+  exportUsers: async () => {
+    const response = await api.get('/admin/export-users', { responseType: 'blob' });
+    return response.data;
+  },
+  exportSellers: async () => {
+    const response = await api.get('/admin/export-sellers', { responseType: 'blob' });
+    return response.data;
+  },
+  getUsers: async () => {
+    const response = await api.get('/admin/users');
     return response.data;
   }
 };

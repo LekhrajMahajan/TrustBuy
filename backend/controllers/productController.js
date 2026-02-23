@@ -1,8 +1,9 @@
 const Product = require('../models/productModel');
 
-// @desc    Fetch all products (For Shop Page - Public)
 const getProducts = async (req, res) => {
   try {
+    // Fetch ALL products to ensure they appear on screen.
+    // The frontend will handle displaying 'Pending Approval' badges.
     const products = await Product.find({}).populate('user', 'name sellerStats');
     res.json(products);
   } catch (error) {
@@ -11,7 +12,7 @@ const getProducts = async (req, res) => {
 };
 
 // @desc    Fetch logged-in seller's products (For Seller Dashboard - Private)
-// ✅ FIX: Filter by req.user._id (Protected Route से आएगा)
+// FIX: Filter by req.user._id (Protected Route से आएगा)
 const getMyProducts = async (req, res) => {
   try {
     const products = await Product.find({ user: req.user._id });
@@ -26,7 +27,7 @@ const createProduct = async (req, res) => {
   try {
     const { name, basePrice, description, category, stock, image } = req.body;
 
-    // ✅ FIX: Assigning the logged-in user's ID to the product
+    // FIX: Assigning the logged-in user's ID to the product
     const product = new Product({
       user: req.user._id,
       name,
@@ -38,7 +39,8 @@ const createProduct = async (req, res) => {
       stock: Number(stock),
       rating: 0,
       numReviews: 0,
-      sales: 0
+      sales: 0,
+      isApproved: req.user.sellerStats && req.user.sellerStats.status === 'active'
     });
 
     const createdProduct = await product.save();
@@ -63,6 +65,18 @@ const createProductReview = async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
+    // Check if user has purchased the product
+    const Order = require('../models/orderModel');
+    const userOrders = await Order.find({ user: req.user._id, isPaid: true });
+
+    const hasPurchased = userOrders.some(order =>
+      order.orderItems.some(item => item.product.toString() === product._id.toString())
+    );
+
+    if (!hasPurchased) {
+      return res.status(400).json({ message: 'You must purchase this product to review it.' });
+    }
+
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );

@@ -1,12 +1,16 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  // ✅ Initialize state directly from Local Storage to prevent overwriting on first render
+  const { user } = useAuth();
+  const cartKey = user ? `cartItems_${user._id}` : 'cartItems_guest';
+
+  // Initialize state directly from Local Storage to prevent overwriting on first render
   const [cartItems, setCartItems] = useState(() => {
     try {
-      const savedCart = localStorage.getItem('cartItems');
+      const savedCart = localStorage.getItem(cartKey);
       return savedCart ? JSON.parse(savedCart) : [];
     } catch (error) {
       console.error("Cart corrupt", error);
@@ -14,10 +18,20 @@ export const CartProvider = ({ children }) => {
     }
   });
 
+  // Reload cart whenever user changes
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem(cartKey);
+      setCartItems(savedCart ? JSON.parse(savedCart) : []);
+    } catch {
+      setCartItems([]);
+    }
+  }, [cartKey]);
+
   // Save to Local Storage whenever cart changes
   useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
+    localStorage.setItem(cartKey, JSON.stringify(cartItems));
+  }, [cartItems, cartKey]);
 
   // 1. Add to Cart
   const addToCart = (product) => {

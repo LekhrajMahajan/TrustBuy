@@ -1,4 +1,5 @@
 import colors from "tailwindcss/colors"
+import animate from "tailwindcss-animate"
 
 export default {
 	darkMode: ["class"],
@@ -12,6 +13,9 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			transitionTimingFunction: {
+				'custom-ease': 'cubic-bezier(0.32, 0.72, 0, 1)',
 			},
 			colors: {
 				blue: colors.neutral,
@@ -45,7 +49,6 @@ export default {
 				fuchsia: colors.neutral,
 				rose: colors.neutral,
 				violet: colors.neutral,
-				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				card: {
 					DEFAULT: 'hsl(var(--card))',
@@ -55,10 +58,7 @@ export default {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
 				},
-				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
-				},
+
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
@@ -88,5 +88,5 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [animate],
 }

@@ -24,8 +24,8 @@ const orderSchema = mongoose.Schema({
     update_time: { type: String },
     email_address: { type: String },
     taxCode: { type: String }, // Transaction ID (UTR)
-    upi_id: { type: String }, // ✅ Added for UPI ID
-    card_last4: { type: String }, // ✅ Added for Card Last 4 Digits
+    upi_id: { type: String }, // Added for UPI ID
+    card_last4: { type: String }, // Added for Card Last 4 Digits
   },
   totalPrice: { type: Number, required: true, default: 0.0 },
   isPaid: { type: Boolean, required: true, default: false },
