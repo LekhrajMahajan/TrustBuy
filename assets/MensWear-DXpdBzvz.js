@@ -1,0 +1,1 @@
+import{j as r}from"./index-BaDRjfji.js";import t from"./ShopPage-BH-lI7Ez.js";import"./ProductCard-DvzM3IKr.js";import"./zap-BImtoEMv.js";import"./star-CaSlIxMv.js";const p=()=>r.jsx(t,{initialCategory:"Men's Wear"});export{p as default};

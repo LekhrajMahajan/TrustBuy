@@ -1,1 +1,0 @@
-import{j as o}from"./index-C-xu5ddY.js";import r from"./ShopPage-BWtqMcHK.js";import"./ProductCard-C4u3lKoT.js";import"./zap-CMWhSjSV.js";import"./star-Bdx35W03.js";const p=()=>o.jsx(r,{initialCategory:"Accessories"});export{p as default};
