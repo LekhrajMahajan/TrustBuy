@@ -6,7 +6,7 @@
   "homepage": "https://LekhrajMahajan.github.io/TrustBuy",
   "scripts": {
     "dev": "vite",
-    "predeploy": "npm run build",
+    "predeploy": "vite build --base=/TrustBuy/",
     "deploy": "gh-pages -d dist",
     "build": "vite build",
     "lint": "eslint .",
