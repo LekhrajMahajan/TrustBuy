@@ -1,1 +1,0 @@
-import{j as t}from"./index-DTo9x7wB.js";import o from"./ShopPage-B_NgkWFw.js";import"./ProductCard-D0-v4c59.js";import"./zap-Bb1I80mm.js";import"./star-Br2OewFv.js";const s=()=>t.jsx(o,{initialCategory:"Laptops"});export{s as default};

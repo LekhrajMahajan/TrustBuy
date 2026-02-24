@@ -1,0 +1,1 @@
+import{j as o}from"./index-DR3cB8TK.js";import t from"./ShopPage-B_t1AvTG.js";import"./ProductCard-BfDd1e1D.js";import"./zap-t41Wi0-r.js";import"./star-BVa7ShEr.js";const s=()=>o.jsx(t,{initialCategory:"Mobile"});export{s as default};
