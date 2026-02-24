@@ -1,1 +1,0 @@
-const r=t=>{if(!t)return"https://via.placeholder.com/300";if(t.startsWith("http")||t.startsWith("data:"))return t;const s=typeof window<"u"&&window.location.hostname.includes("github.io")?"/TrustBuy":"",n=t.startsWith("/")?t:`/${t}`;return`${s}${n}`};export{r as g};
