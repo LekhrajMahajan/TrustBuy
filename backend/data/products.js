@@ -262,7 +262,7 @@ const products = [
   },
   {
     name: "Black Biker Jacket",
-    image: "/TrustBuy/images/black_biker_jacket.png",
+    image: "/images/black_biker_jacket.png",
     description: "Stay edgy and warm with this classic asymmetrical zip black biker jacket.",
     category: "Jackets",
     basePrice: 4200,
@@ -274,7 +274,7 @@ const products = [
   },
   {
     name: "Blue Denim Jacket",
-    image: "/TrustBuy/images/blue_denim_jacket.png",
+    image: "/images/blue_denim_jacket.png",
     description: "A versatile blue denim jacket suitable for layering all year round.",
     category: "Jackets",
     basePrice: 2800,
@@ -286,7 +286,7 @@ const products = [
   },
   {
     name: "Waterproof Windbreaker",
-    image: "/TrustBuy/images/waterproof_windbreaker.png",
+    image: "/images/waterproof_windbreaker.png",
     description: "Lightweight, breathable, and fully waterproof to conquer the elements.",
     category: "Jackets",
     basePrice: 3200,
@@ -348,7 +348,7 @@ const products = [
   },
   {
     name: "Straight Leg Black Denim",
-    image: "/TrustBuy/images/black_denim_jeans.png",
+    image: "/images/black_denim_jeans.png",
     description: "Clean and sharp straight leg black jeans for all casual pairings.",
     category: "Denim",
     basePrice: 2500,
@@ -484,7 +484,7 @@ const products = [
   },
   {
     name: "Pleated Midi Skirt",
-    image: "/TrustBuy/images/pleated_midi_skirt.png",
+    image: "/images/pleated_midi_skirt.png",
     description: "Flowy and elegant pleated midi skirt made with high-quality fabric.",
     category: "Women's Wear",
     basePrice: 2200,
@@ -497,7 +497,7 @@ const products = [
   // --- BAGS & PURSES (5) ---
   {
     name: "Premium Leather Purse",
-    image: "/TrustBuy/images/premium_leather_purse.png",
+    image: "/images/premium_leather_purse.png",
     description: "Elegant, minimalist, and perfectly crafted beige leather purse for everyday luxury.",
     category: "Bags",
     basePrice: 5500,
@@ -509,7 +509,7 @@ const products = [
   },
   {
     name: "Canvas Tote Bag",
-    image: "/TrustBuy/images/canvas_tote_bag.png",
+    image: "/images/canvas_tote_bag.png",
     description: "Durable and spacious canvas tote bag, perfect for shopping or the beach.",
     category: "Bags",
     basePrice: 1200,
@@ -571,7 +571,7 @@ const products = [
   },
   {
     name: "Dell XPS 15",
-    image: "/TrustBuy/images/dell_xps_15.png",
+    image: "/images/dell_xps_15.png",
     description: "Premium build quality with a stunning 4K OLED display.",
     category: "Laptops",
     basePrice: 135000,
@@ -583,7 +583,7 @@ const products = [
   },
   {
     name: "Asus ROG Zephyrus",
-    image: "/TrustBuy/images/asus_rog_zephyrus.png",
+    image: "/images/asus_rog_zephyrus.png",
     description: "High-end gaming laptop with RTX 4080 and 240Hz refresh rate.",
     category: "Laptops",
     basePrice: 180000,
@@ -645,7 +645,7 @@ const products = [
   },
   {
     name: "boAt Rockerz Neckband",
-    image: "/TrustBuy/images/boat_rockerz_neckband.png",
+    image: "/images/boat_rockerz_neckband.png",
     description: "Ergonomic wireless neckband with 30-hour battery life and deep bass.",
     category: "Audio",
     basePrice: 2990,
@@ -695,7 +695,7 @@ const products = [
   },
   {
     name: "Braided Charging Cable 3-in-1",
-    image: "/TrustBuy/images/braided_charging_cable.png",
+    image: "/images/braided_charging_cable.png",
     description: "Durable braided cable for Type-C, Lightning, and Micro USB devices.",
     category: "Accessories",
     basePrice: 599,
@@ -719,7 +719,7 @@ const products = [
   },
   {
     name: "Adjustable Laptop Stand",
-    image: "/TrustBuy/images/adjustable_laptop_stand.png",
+    image: "/images/adjustable_laptop_stand.png",
     description: "Ergonomic aluminum laptop stand to improve your posture.",
     category: "Accessories",
     basePrice: 1999,
