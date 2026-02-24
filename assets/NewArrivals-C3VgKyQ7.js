@@ -1,1 +1,0 @@
-import{j as r}from"./index-D4x9o8xF.js";import t from"./ShopPage-DlMqoBCC.js";import"./ProductCard-DiA4nZ5R.js";import"./helpers-CgQ46Het.js";import"./zap-YcKANzh9.js";import"./star-CtWm89K3.js";const a=()=>r.jsx(t,{initialSort:"newest"});export{a as default};
