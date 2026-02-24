@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { orderService } from '../services/api';
 import { useNavigate, Link } from 'react-router-dom';
 import { Package, ArrowRight, Loader2 } from 'lucide-react';
+import { getImageUrl } from '../utils/helpers';
 
 const MyOrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -77,7 +78,7 @@ const MyOrdersPage = () => {
                   {(order.orderItems || []).map((item, index) => (
                     <div key={index} className="flex items-center gap-4">
                       <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 overflow-hidden flex-shrink-0">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal" />
+                        <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal" />
                       </div>
                       <div>
                         <h4 className="font-bold text-sm text-black dark:text-white line-clamp-1">{item.name}</h4>

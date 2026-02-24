@@ -80,7 +80,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className="flex-1 bg-white dark:bg-gray-900/95 sm:bg-white dark:bg-gray-900 backdrop-blur sm:backdrop-filter-none text-black dark:text-white h-8 sm:h-10 uppercase text-[8px] sm:text-[10px] font-bold tracking-tight sm:tracking-widest hover:bg-black dark:bg-gray-800 hover:text-white transition-colors shadow-sm sm:shadow-lg flex items-center justify-center gap-1 sm:gap-2"
+                className="flex-1 bg-white dark:bg-gray-900/95 sm:bg-white sm:dark:bg-gray-900 backdrop-blur sm:backdrop-filter-none text-black dark:text-white h-8 sm:h-10 uppercase text-[8px] sm:text-[10px] font-bold tracking-tight sm:tracking-widest hover:bg-black hover:dark:bg-gray-800 hover:text-white transition-colors shadow-sm sm:shadow-lg flex items-center justify-center gap-1 sm:gap-2"
               >
                 <ShoppingBag className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                 <span className="truncate">{product.stock === 0 ? 'Sold' : 'Add'}</span>
@@ -98,7 +98,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
           ) : (
             // Seller Edit/Delete Buttons
             <div className="flex w-full gap-1 sm:gap-2">
-              {onEdit && <button onClick={() => onEdit(product)} className="flex-1 bg-white dark:bg-gray-900/95 sm:bg-white dark:bg-gray-900 text-black dark:text-white h-8 sm:h-10 text-[9px] sm:text-xs font-bold hover:bg-black dark:bg-gray-800 hover:text-white shadow-sm sm:shadow-lg backdrop-blur">Edit</button>}
+              {onEdit && <button onClick={() => onEdit(product)} className="flex-1 bg-white dark:bg-gray-900/95 sm:bg-white sm:dark:bg-gray-900 text-black dark:text-white h-8 sm:h-10 text-[9px] sm:text-xs font-bold hover:bg-black hover:dark:bg-gray-800 hover:text-white shadow-sm sm:shadow-lg backdrop-blur">Edit</button>}
               {onDelete && <button onClick={() => onDelete(product._id)} className="flex-1 bg-red-600/95 sm:bg-red-600 text-white dark:text-white h-8 sm:h-10 text-[9px] sm:text-xs font-bold hover:bg-red-700 shadow-sm sm:shadow-lg backdrop-blur">Delete</button>}
             </div>
           )}

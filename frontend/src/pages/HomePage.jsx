@@ -45,17 +45,31 @@ const HomePage = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
+        let cancelled = false;
+
+        // Stop showing the spinner after 5 s even if the API is still pending
+        const timeout = setTimeout(() => {
+            if (!cancelled) setLoading(false);
+        }, 5000);
+
         const fetchProducts = async () => {
             try {
                 const data = await productService.getAllProducts();
-                setProducts(data);
+                if (!cancelled) setProducts(data);
             } catch (err) {
                 console.error(err);
             } finally {
-                setLoading(false);
+                if (!cancelled) setLoading(false);
+                clearTimeout(timeout);
             }
         };
+
         fetchProducts();
+
+        return () => {
+            cancelled = true;
+            clearTimeout(timeout);
+        };
     }, []);
 
     // Automatic Slider

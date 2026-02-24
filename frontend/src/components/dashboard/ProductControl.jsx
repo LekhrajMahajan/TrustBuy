@@ -12,6 +12,7 @@ import {
     Activity
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getImageUrl } from '../../utils/helpers';
 
 const ProductControl = () => {
     const [products, setProducts] = useState([]);
@@ -122,7 +123,7 @@ const ProductControl = () => {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
                                                     <div className="flex-shrink-0 h-10 w-10">
-                                                        <img className="h-10 w-10 rounded-md object-cover border border-gray-200 dark:border-gray-700" src={product.image || 'https://via.placeholder.com/40'} alt="" />
+                                                        <img className="h-10 w-10 rounded-md object-cover border border-gray-200 dark:border-gray-700" src={getImageUrl(product.image)} alt="" />
                                                     </div>
                                                     <div className="ml-4">
                                                         <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{product.name}</div>

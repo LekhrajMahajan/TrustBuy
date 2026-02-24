@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from 'lucide-react';
+import { getImageUrl } from '../utils/helpers';
 
 const CartPage = () => {
   const { cartItems, removeFromCart, updateQty, itemsPrice, taxPrice, shippingPrice, totalPrice } = useCart();
@@ -39,7 +40,7 @@ const CartPage = () => {
                 <div key={item._id} className="flex gap-4 sm:gap-6 py-6 border-b border-gray-100 dark:border-gray-800 last:border-0">
                   <div className="w-24 sm:w-32 h-32 sm:h-40 bg-gray-50 dark:bg-gray-800 flex-shrink-0 overflow-hidden relative">
                     <img
-                      src={item.image}
+                      src={getImageUrl(item.image)}
                       alt={item.name}
                       className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal hover:scale-105 transition-transform duration-500"
                     />
