@@ -7,24 +7,26 @@ import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
+const BASE = import.meta.env.BASE_URL; // '/' locally, '/TrustBuy/' on GitHub Pages
+
 const heroImages = [
     {
-        url: "/hero/slide1.jpg",
+        url: `${BASE}hero/slide1.jpg`,
         title: "Define Your Style.",
         subtitle: "Shop The Collection"
     },
     {
-        url: "/hero/slide2.jpg",
+        url: `${BASE}hero/slide2.jpg`,
         title: "Future Tech.",
         subtitle: "Upgrade Your Workflow"
     },
     {
-        url: "/hero/slide3.jpg",
+        url: `${BASE}hero/slide3.jpg`,
         title: "Urban Living.",
         subtitle: "Essentials For You"
     },
     {
-        url: "/hero/slide4.jpg",
+        url: `${BASE}hero/slide4.jpg`,
         title: "Refined Classics.",
         subtitle: "Discover Men's Wear"
     }
