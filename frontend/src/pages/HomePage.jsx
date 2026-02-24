@@ -72,8 +72,6 @@ const HomePage = () => {
     const trending = products.slice(0, 4);
     const newArrivals = products.slice(4, 8);
 
-    if (loading) return <div className="h-screen flex items-center justify-center"><div className="w-6 h-6 border-2 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div></div>;
-
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
 
@@ -92,6 +90,7 @@ const HomePage = () => {
                             src={heroImages[currentSlide].url}
                             alt="Hero"
                             className="w-full h-full object-cover opacity-90"
+                            fetchPriority="high"
                         />
                         <div className="absolute inset-0 bg-black dark:bg-gray-800/20"></div>
                     </motion.div>
@@ -159,9 +158,17 @@ const HomePage = () => {
                     <Link to="/shop?sort=trending" className="text-xs md:text-sm font-bold border-b border-black dark:border-white pb-0.5 hover:text-[#fdc600] hover:border-[#fdc600] transition-colors">View All</Link>
                 </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
-                    {trending.map(product => (
-                        <ProductCard key={product._id} product={product} />
-                    ))}
+                    {loading ? (
+                        [...Array(4)].map((_, i) => (
+                            <div key={i} className="aspect-[3/4] bg-gray-200 dark:bg-gray-800 animate-pulse rounded-sm flex items-center justify-center">
+                                <div className="w-6 h-6 border-2 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                        ))
+                    ) : (
+                        trending.map(product => (
+                            <ProductCard key={product._id} product={product} />
+                        ))
+                    )}
                 </div>
             </section>
 
@@ -195,9 +202,17 @@ const HomePage = () => {
                     <Link to="/shop?sort=newest" className="text-xs md:text-sm font-bold border-b border-black dark:border-white pb-0.5 hover:text-[#fdc600] hover:border-[#fdc600] transition-colors">View All</Link>
                 </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
-                    {newArrivals.map(product => (
-                        <ProductCard key={product._id} product={product} />
-                    ))}
+                    {loading ? (
+                        [...Array(4)].map((_, i) => (
+                            <div key={i} className="aspect-[3/4] bg-gray-200 dark:bg-gray-800 animate-pulse rounded-sm flex items-center justify-center">
+                                <div className="w-6 h-6 border-2 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                        ))
+                    ) : (
+                        newArrivals.map(product => (
+                            <ProductCard key={product._id} product={product} />
+                        ))
+                    )}
                 </div>
             </section>
 

@@ -150,7 +150,13 @@ const ShopPage = ({ initialCategory, initialSort }) => {
 
         {/* 2. Grid */}
         {loading ? (
-          <div className="flex justify-center h-64 items-center"><div className="w-8 h-8 border-2 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div></div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="aspect-[3/4] bg-gray-200 dark:bg-gray-800 animate-pulse rounded-sm flex items-center justify-center">
+                <div className="w-6 h-6 border-2 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ))}
+          </div>
         ) : displayedProducts.length === 0 ? (
           <div className="text-center py-32 bg-gray-50 dark:bg-gray-950">
             <h3 className="text-2xl font-bold uppercase text-gray-400">No Matches Found</h3>
