@@ -15,6 +15,7 @@ import {
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobileShopOpen, setIsMobileShopOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -171,19 +172,39 @@ const Navbar = () => {
       </div>
       {isOpen && (
         <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-xl p-4 flex flex-col gap-4 md:hidden">
-          <Link to="/" onClick={() => setIsOpen(false)} className="text-lg font-medium">Home</Link>
-          <Link to="/shop" onClick={() => setIsOpen(false)} className="text-lg font-medium">Shop All</Link>
-          <Link to="/shop?category=electronics" onClick={() => setIsOpen(false)} className="text-lg font-medium pl-4 text-gray-500">Electronics</Link>
-          <Link to="/shop?category=fashion" onClick={() => setIsOpen(false)} className="text-lg font-medium pl-4 text-gray-500">Fashion</Link>
+          <Link to="/" onClick={() => setIsOpen(false)} className="text-lg font-medium text-black dark:text-white hover:text-[#fdc600] transition-colors">Home</Link>
+
+          <div className="flex flex-col gap-2">
+            <div
+              className="flex justify-between items-center cursor-pointer text-lg font-medium text-black dark:text-white hover:text-[#fdc600] transition-colors"
+              onClick={() => setIsMobileShopOpen(!isMobileShopOpen)}
+            >
+              <span>Shop All</span>
+              <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${isMobileShopOpen ? 'rotate-180' : ''}`} />
+            </div>
+
+            <div className={`flex flex-col gap-3 pl-4 overflow-hidden transition-all duration-300 ${isMobileShopOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
+              <div className="flex flex-col gap-2 border-l-2 border-gray-200 dark:border-gray-700 pl-4">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Categories</span>
+                <Link to="/shop?category=electronics" onClick={() => setIsOpen(false)} className="text-base text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Electronics</Link>
+                <Link to="/shop?category=fashion" onClick={() => setIsOpen(false)} className="text-base text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Fashion</Link>
+
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-2">Collections</span>
+                <Link to="/shop/new-arrivals" onClick={() => setIsOpen(false)} className="text-base text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">New Arrivals</Link>
+                <Link to="/shop?sort=trending" onClick={() => setIsOpen(false)} className="text-base text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Trending</Link>
+              </div>
+            </div>
+          </div>
+
           {user && (
-            <Link to="/seller/dashboard" onClick={() => setIsOpen(false)} className="text-lg font-medium">Sell Dashboard</Link>
+            <Link to="/seller/dashboard" onClick={() => setIsOpen(false)} className="text-lg font-medium text-black dark:text-white hover:text-[#fdc600] transition-colors">Sell Dashboard</Link>
           )}
           {user ? (
-            <button onClick={handleLogout} className="text-left text-red-600 font-medium">Logout</button>
+            <button onClick={handleLogout} className="text-left text-red-600 font-medium text-lg hover:text-red-700 transition-colors">Logout</button>
           ) : (
             <div className="grid grid-cols-2 gap-4 mt-4">
-              <Link to="/login" className="text-center py-2 border border-gray-200 dark:border-white rounded dark:text-white">Login</Link>
-              <Link to="/register" className="text-center py-2 bg-black dark:bg-black border border-transparent dark:border-white text-white dark:text-white rounded">Sign Up</Link>
+              <Link to="/login" onClick={() => setIsOpen(false)} className="text-center py-2 border border-gray-200 dark:border-white rounded dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Login</Link>
+              <Link to="/register" onClick={() => setIsOpen(false)} className="text-center py-2 bg-black dark:bg-black border border-transparent dark:border-white text-white dark:text-white rounded hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors">Sign Up</Link>
             </div>
           )}
         </div>
