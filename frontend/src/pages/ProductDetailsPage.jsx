@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../hooks/useAuth';
 import { Star, ShoppingCart, Truck, ShieldCheck, User, ChevronDown, Loader2, Zap } from 'lucide-react';
 import { toast } from 'sonner';
+import { getImageUrl } from '../utils/helpers';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -98,7 +99,7 @@ const ProductDetailsPage = () => {
           {/* Left: Image */}
           <div className="flex justify-center items-center bg-gray-50 dark:bg-gray-950 rounded-lg p-6 h-[300px] md:h-[400px] border border-slate-100">
             <img
-              src={product.image || 'https://via.placeholder.com/500'}
+              src={getImageUrl(product.image)}
               alt={product.name}
               className="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300 drop-shadow-sm"
             />

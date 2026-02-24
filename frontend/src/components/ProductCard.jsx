@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { getImageUrl } from '../utils/helpers';
 
 const ProductCard = ({ product, onEdit, onDelete }) => {
   const { addToCart } = useCart();
@@ -51,7 +52,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-sm mb-4">
         <Link to={`/product/${product._id}`} className="block h-full w-full">
           <img
-            src={product.image || "https://via.placeholder.com/300"}
+            src={getImageUrl(product.image)}
             alt={product.name}
             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             loading="lazy"
