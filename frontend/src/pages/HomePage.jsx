@@ -9,34 +9,34 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const heroImages = [
     {
-        url: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop",
+        url: "/hero/slide1.jpg",
         title: "Define Your Style.",
         subtitle: "Shop The Collection"
     },
     {
-        url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2071&auto=format&fit=crop",
+        url: "/hero/slide2.jpg",
         title: "Future Tech.",
         subtitle: "Upgrade Your Workflow"
     },
     {
-        url: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=2070&auto=format&fit=crop",
+        url: "/hero/slide3.jpg",
         title: "Urban Living.",
         subtitle: "Essentials For You"
     },
     {
-        url: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6?q=80&w=2070&auto=format&fit=crop",
+        url: "/hero/slide4.jpg",
         title: "Refined Classics.",
         subtitle: "Discover Men's Wear"
     }
 ];
 
 const categoryImages = {
-    'Bags': "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=80",
-    'Shoes': "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",
-    'Electronics': "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=400&q=80",
-    'Watches': "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&q=80",
-    'Denim': "https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=400&q=80",
-    'Jackets': "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80"
+    'Bags': "https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    'Shoes': "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    'Electronics': "https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    'Watches': "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    'Denim': "https://images.pexels.com/photos/1346187/pexels-photo-1346187.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    'Jackets': "https://images.pexels.com/photos/1124468/pexels-photo-1124468.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop"
 };
 
 const HomePage = () => {
@@ -86,8 +86,16 @@ const HomePage = () => {
     const trending = products.slice(0, 4);
     const newArrivals = products.slice(4, 8);
 
+
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
+
+            {/* Pre-cache all hero images so slide transitions are instant */}
+            <div className="hidden" aria-hidden="true">
+                {heroImages.map((img, i) => (
+                    <img key={i} src={img.url} alt="" fetchPriority={i === 0 ? "high" : "low"} />
+                ))}
+            </div>
 
             {/* 1. Hero Section (Slider) */}
             <section className="relative h-[70vh] md:h-[85vh] w-full bg-[#f3f3f3] overflow-hidden flex items-center justify-center">
@@ -105,8 +113,9 @@ const HomePage = () => {
                             alt="Hero"
                             className="w-full h-full object-cover opacity-90"
                             fetchPriority="high"
+                            loading="eager"
                         />
-                        <div className="absolute inset-0 bg-black dark:bg-gray-800/20"></div>
+                        <div className="absolute inset-0 bg-black/40 dark:bg-black/50"></div>
                     </motion.div>
                 </AnimatePresence>
 
