@@ -1,10 +1,10 @@
 /**
  * Converts a relative image path like /images/foo.png into a full URL
- * that works on GitHub Pages, Vercel, and localhost.
+ * that works on GitHub Pages and localhost.
  *
  * Uses Vite's import.meta.env.BASE_URL which is injected at build time:
- * - GitHub Pages  → https://lekhrajmahajan.github.io/TrustBuy/images/foo.png
- * - Vercel/local  → https://your-domain.com/images/foo.png
+ * - GitHub Pages → https://lekhrajmahajan.github.io/TrustBuy/images/foo.png
+ * - Local        → http://localhost:5173/images/foo.png
  */
 export const getImageUrl = (imagePath) => {
   if (!imagePath) return 'https://via.placeholder.com/300';
