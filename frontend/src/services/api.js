@@ -1,15 +1,8 @@
 import axios from 'axios';
 
 
-// Helper to ensure URL ends with /api
-// Helper to determine API URL based on environment
+// Determine API base URL from environment variable, fallback to local backend
 const getBaseUrl = () => {
-  // 1. If deployed on GitHub Pages or any non-local environment, use Render Backend
-  if (window.location.hostname === 'lekhrajmahajan.github.io' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')) {
-    return 'https://trustbuy.onrender.com/api';
-  }
-
-  // 2. If we are on Localhost, try VITE_API_URL first, then fallback to local backend
   let url = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   // Cleanup: Remove trailing slash if present
