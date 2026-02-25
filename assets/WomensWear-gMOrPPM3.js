@@ -1,1 +1,0 @@
-import{j as o}from"./index-BcmTH2ev.js";import r from"./ShopPage-DkqZEcNg.js";import"./ProductCard-BKZft3eA.js";import"./helpers-DaoO1KdG.js";import"./zap-CHttvDce.js";import"./star-DwnYoGO_.js";const s=()=>o.jsx(r,{initialCategory:"Women's Wear"});export{s as default};
