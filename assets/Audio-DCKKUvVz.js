@@ -1,0 +1,1 @@
+import{j as o}from"./index-Be1Zubjk.js";import t from"./ShopPage-Bk1lvbTg.js";import"./ProductCard-BcJmaK_f.js";import"./helpers-DaoO1KdG.js";import"./zap-C6clCx7u.js";import"./star-BvVS1y16.js";const s=()=>o.jsx(t,{initialCategory:"Audio"});export{s as default};

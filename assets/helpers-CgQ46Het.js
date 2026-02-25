@@ -1,1 +1,0 @@
-const c=t=>{if(!t)return"https://via.placeholder.com/300";if(t.startsWith("http")||t.startsWith("data:"))return t;const r="/TrustBuy/".replace(/\/$/,""),s=t.startsWith("/")?t:`/${t}`;return`${r}${s}`};export{c as g};
