@@ -2,7 +2,7 @@ const products = [
   // --- ELECTRONICS (5) ---
   {
     name: "Wireless Over-Ear Headphones",
-    image: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=400&q=60&fm=webp&auto=compress",
     description: "Experience premium sound with active noise cancellation.",
     category: "Electronics",
     basePrice: 2999,
@@ -14,7 +14,7 @@ const products = [
   },
   {
     name: "Smart LED TV 55 Inch",
-    image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Cinema at home. 4K Ultra HD resolution and smart connectivity.",
     category: "Electronics",
     basePrice: 45000,
@@ -26,7 +26,7 @@ const products = [
   },
   {
     name: "DSLR Camera Kit",
-    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Capture the moment. Includes an 18-55mm lens, perfect for beginners.",
     category: "Electronics",
     basePrice: 35000,
@@ -38,7 +38,7 @@ const products = [
   },
   {
     name: "Portable Bluetooth Speaker",
-    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Powerful sound in a compact design. Play music anywhere.",
     category: "Electronics",
     basePrice: 1999,
@@ -50,7 +50,7 @@ const products = [
   },
   {
     name: "Smart Home Security Camera",
-    image: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1558002038-1055907df827?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Keep your home safe with 1080p HD video and motion alerts.",
     category: "Electronics",
     basePrice: 4500,
@@ -64,7 +64,7 @@ const products = [
   // --- SHOES (5) ---
   {
     name: "Nike Zoom Running Shoes",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=60&fm=webp&auto=compress",
     description: "Lightweight and comfortable, perfect for running or everyday wear.",
     category: "Shoes",
     basePrice: 4500,
@@ -76,7 +76,7 @@ const products = [
   },
   {
     name: "Classic White Sneakers",
-    image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400&q=60&fm=webp&auto=compress",
     description: "Versatile white sneakers that go with practically any casual outfit.",
     category: "Shoes",
     basePrice: 2500,
@@ -88,7 +88,7 @@ const products = [
   },
   {
     name: "Athletic Training Shoes",
-    image: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=400&q=60&fm=webp&auto=compress",
     description: "Durable tracking shoes with immense grip and heel support.",
     category: "Shoes",
     basePrice: 3200,
@@ -100,7 +100,7 @@ const products = [
   },
   {
     name: "Premium Leather Loafers",
-    image: "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=400&q=60&fm=webp&auto=compress",
     description: "Elegant and stylish slip-on loafers for formal occasions.",
     category: "Shoes",
     basePrice: 5000,
@@ -112,7 +112,7 @@ const products = [
   },
   {
     name: "Casual Slip-On Canvas",
-    image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=400&q=60&fm=webp&auto=compress",
     description: "Easy and comfortable everyday canvas shoes for summer.",
     category: "Shoes",
     basePrice: 1500,
@@ -126,7 +126,7 @@ const products = [
   // --- WATCHES (5) ---
   {
     name: "Classic Leather Watch",
-    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&q=60&fm=webp&auto=compress",
     description: "Timeless elegance. This classic watch features a genuine leather strap and a minimalist dial.",
     category: "Watches",
     basePrice: 4500,
@@ -138,7 +138,7 @@ const products = [
   },
   {
     name: "Luxury Silver Chronograph",
-    image: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=400&q=60&fm=webp&auto=compress",
     description: "A bold stainless steel chronograph watch for a professional look.",
     category: "Watches",
     basePrice: 12000,
@@ -150,7 +150,7 @@ const products = [
   },
   {
     name: "Minimalist Black Watch",
-    image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=400&q=60&fm=webp&auto=compress",
     description: "All-black minimalist design for modern, everyday wear.",
     category: "Watches",
     basePrice: 3500,
@@ -162,7 +162,7 @@ const products = [
   },
   {
     name: "Smart Fitness Watch",
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=60&fm=webp&auto=compress",
     description: "Track your heart rate, steps, and sleep intelligently on your wrist.",
     category: "Watches",
     basePrice: 5500,
@@ -174,7 +174,7 @@ const products = [
   },
   {
     name: "Gold Plated Dress Watch",
-    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&q=60&fm=webp&auto=compress",
     description: "A stunning gold-plated timepiece to elevate any evening outfit.",
     category: "Watches",
     basePrice: 8500,
@@ -188,7 +188,7 @@ const products = [
   // --- MOBILE (Phones) (5) ---
   {
     name: "Vision Pro 15 Smartphone",
-    image: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "The latest Vision Pro 15 features a stunning display and all-day battery life.",
     category: "Mobile",
     basePrice: 89999,
@@ -200,7 +200,7 @@ const products = [
   },
   {
     name: "Galaxy S24 Ultra",
-    image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Experience the future with the Galaxy S24 Ultra. AI-powered features.",
     category: "Mobile",
     basePrice: 124999,
@@ -212,7 +212,7 @@ const products = [
   },
   {
     name: "Pixel 8 Pro",
-    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Smart, simple, and powerful. Featuring the best-in-class camera.",
     category: "Mobile",
     basePrice: 75999,
@@ -224,7 +224,7 @@ const products = [
   },
   {
     name: "OnePlus 12 5G",
-    image: "https://images.unsplash.com/photo-1678911820864-e2c567c655d7?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Smooth beyond belief. Flagship performance with Snapdragon 8 Gen 3.",
     category: "Mobile",
     basePrice: 64999,
@@ -236,7 +236,7 @@ const products = [
   },
   {
     name: "Budget King M5",
-    image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Exceptional value for money. 50MP camera, 5000mAh battery.",
     category: "Mobile",
     basePrice: 15999,
@@ -250,7 +250,7 @@ const products = [
   // --- JACKETS (5) ---
   {
     name: "Brown Leather Jacket",
-    image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=60&fm=webp&auto=compress",
     description: "A timeless classic. This rugged jacket features a comfortable fit and durable stitching.",
     category: "Jackets",
     basePrice: 3500,
@@ -298,7 +298,7 @@ const products = [
   },
   {
     name: "Winter Puffer Jacket",
-    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=60&fm=webp&auto=compress",
     description: "Stay incredibly warm during freezing days with this lined puffer jacket.",
     category: "Jackets",
     basePrice: 5500,
@@ -312,7 +312,7 @@ const products = [
   // --- DENIM (Clothes) (5) ---
   {
     name: "Classic Blue Denim Jeans",
-    image: "https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=400&q=60&fm=webp&auto=compress",
     description: "Comfortable and durable, the perfect everyday staple.",
     category: "Denim",
     basePrice: 2200,
@@ -324,7 +324,7 @@ const products = [
   },
   {
     name: "High-Waist Skinny Denim",
-    image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "The perfect fit. Hugs your curves with superior comfort stretch denim.",
     category: "Denim",
     basePrice: 2800,
@@ -336,7 +336,7 @@ const products = [
   },
   {
     name: "Ripped Vintage Denim",
-    image: "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400&q=60&fm=webp&auto=compress",
     description: "Distressed light-wash jeans for an authentic vintage street-style look.",
     category: "Denim",
     basePrice: 3000,
@@ -360,7 +360,7 @@ const products = [
   },
   {
     name: "Relaxed Fit Cargo Denim",
-    image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=400&q=60&fm=webp&auto=compress",
     description: "Comfortable and practical with multiple utility pockets.",
     category: "Denim",
     basePrice: 3200,
@@ -374,7 +374,7 @@ const products = [
   // --- MEN'S WEAR (5) ---
   {
     name: "Premium Cotton T-Shirt",
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Soft, breathable, and essential. Made from 100% organic cotton.",
     category: "Men's Wear",
     basePrice: 999,
@@ -386,7 +386,7 @@ const products = [
   },
   {
     name: "Slim Fit Chinos",
-    image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Versatile style for work or weekend. Tailored look with stretch for movement.",
     category: "Men's Wear",
     basePrice: 2200,
@@ -398,7 +398,7 @@ const products = [
   },
   {
     name: "Formal White Shirt",
-    image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Crisp and professional. Wrinkle-resistant with a modern cut for the office.",
     category: "Men's Wear",
     basePrice: 1800,
@@ -410,7 +410,7 @@ const products = [
   },
   {
     name: "Men's Casual Hoodie",
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&q=60&fm=webp&auto=compress",
     description: "Warm and cozy fleece-lined hoodie for cold evenings.",
     category: "Men's Wear",
     basePrice: 2400,
@@ -422,7 +422,7 @@ const products = [
   },
   {
     name: "Patterned Summer Button-Up",
-    image: "https://images.unsplash.com/photo-1598032895397-b9472444bf93?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1598032895397-b9472444bf93?w=400&q=60&fm=webp&auto=compress",
     description: "Lightweight and airy short-sleeve shirt for tropical vibes.",
     category: "Men's Wear",
     basePrice: 1600,
@@ -436,7 +436,7 @@ const products = [
   // --- WOMEN'S WEAR (5) ---
   {
     name: "Floral Summer Dress",
-    image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Breezy and beautiful. Perfect for sunny days.",
     category: "Women's Wear",
     basePrice: 2500,
@@ -448,7 +448,7 @@ const products = [
   },
   {
     name: "Elegant Evening Gown",
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Turn heads at any event. Sophisticated detailing and a luxurious drape.",
     category: "Women's Wear",
     basePrice: 5000,
@@ -460,7 +460,7 @@ const products = [
   },
   {
     name: "Chic Blazer",
-    image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=60&fm=webp&auto=compress&fit=crop",
     description: "Power dressing made easy. Adds polish to any outfit, from office to casual.",
     category: "Women's Wear",
     basePrice: 3200,
@@ -472,7 +472,7 @@ const products = [
   },
   {
     name: "Sleeveless Silk Top",
-    image: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=400&q=60&fm=webp&auto=compress",
     description: "A luxuriously smooth and breezy silk top for any occasion.",
     category: "Women's Wear",
     basePrice: 1800,
@@ -521,7 +521,7 @@ const products = [
   },
   {
     name: "Business Laptop Backpack",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=60&fm=webp&auto=compress",
     description: "Sleek and functional backpack with a dedicated padded laptop compartment.",
     category: "Bags",
     basePrice: 3500,
@@ -533,7 +533,7 @@ const products = [
   },
   {
     name: "Designer Crossbody Bag",
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&q=60&fm=webp&auto=compress",
     description: "A compact designer piece that elevates any evening outfit.",
     category: "Bags",
     basePrice: 8000,
@@ -545,7 +545,7 @@ const products = [
   },
   {
     name: "Vintage Messenger Bag",
-    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=60&fm=webp&auto=compress",
     description: "Classic styling meets modern utility in this rugged messenger bag.",
     category: "Bags",
     basePrice: 4000,
@@ -559,7 +559,7 @@ const products = [
   // --- LAPTOPS (5) ---
   {
     name: "MacBook Pro M3",
-    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=60&fm=webp&auto=compress",
     description: "Incredible performance with the latest M3 chip and Retina display.",
     category: "Laptops",
     basePrice: 150000,
@@ -595,7 +595,7 @@ const products = [
   },
   {
     name: "Lenovo ThinkPad X1",
-    image: "https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?w=400&q=60&fm=webp&auto=compress",
     description: "The ultimate business laptop with unmatched keyboard comfort.",
     category: "Laptops",
     basePrice: 120000,
@@ -607,7 +607,7 @@ const products = [
   },
   {
     name: "HP Spectre x360",
-    image: "https://images.unsplash.com/photo-1544099858-75feeb57f01b?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1544099858-75feeb57f01b?w=400&q=60&fm=webp&auto=compress",
     description: "Elegant 2-in-1 convertible laptop perfect for creators.",
     category: "Laptops",
     basePrice: 140000,
@@ -621,7 +621,7 @@ const products = [
   // --- AUDIO (Headphones/Neckbands/Earbuds/Earphones) (5) ---
   {
     name: "Sony WH-1000XM5 Headphones",
-    image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400&q=60&fm=webp&auto=compress",
     description: "Industry-leading noise cancellation and premium sound.",
     category: "Audio",
     basePrice: 30000,
@@ -633,7 +633,7 @@ const products = [
   },
   {
     name: "Apple AirPods Pro",
-    image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=400&q=60&fm=webp&auto=compress",
     description: "Magic like you've never heard. Active noise cancellation for immersive sound.",
     category: "Audio",
     basePrice: 24900,
@@ -657,7 +657,7 @@ const products = [
   },
   {
     name: "Sennheiser Wired Earphones",
-    image: "https://images.unsplash.com/photo-1505236273191-1dce886b01e9?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1505236273191-1dce886b01e9?w=400&q=60&fm=webp&auto=compress",
     description: "High-fidelity wired earphones for authentic sound reproduction.",
     category: "Audio",
     basePrice: 1999,
@@ -671,7 +671,7 @@ const products = [
   // --- ACCESSORIES (5) ---
   {
     name: "Minimalist Leather Wallet",
-    image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=60&fm=webp&auto=compress",
     description: "Slim and elegant genuine leather wallet with RFID blocking.",
     category: "Accessories",
     basePrice: 999,
@@ -683,7 +683,7 @@ const products = [
   },
   {
     name: "Polarized Aviator Sunglasses",
-    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&q=60&fm=webp&auto=compress",
     description: "Classic aviator style with UV400 protection.",
     category: "Accessories",
     basePrice: 1599,
@@ -707,7 +707,7 @@ const products = [
   },
   {
     name: "Classic Canvas Belt",
-    image: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=400&q=60&fm=webp&auto=compress",
     description: "Adjustable canvas belt with a solid metal buckle.",
     category: "Accessories",
     basePrice: 499,

@@ -1,15 +1,17 @@
-import React from 'react';
-import { ShieldCheck, Star, ShoppingBag, Heart, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { Star, ShoppingBag, Zap } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { getImageUrl } from '../utils/helpers';
+import { getImageUrl, getBlurUrl } from '../utils/helpers';
 
 const ProductCard = ({ product, onEdit, onDelete }) => {
   const { addToCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+  // Hooks must be called before any early returns (React Rules of Hooks)
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   if (!product) return null;
 
@@ -47,15 +49,30 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
     ? Math.round(((basePrice - currentPrice) / basePrice) * 100)
     : 0;
 
+  const blurUrl = getBlurUrl(product.image);
+  const fullUrl = getImageUrl(product.image);
+
   return (
     <div className="group relative flex flex-col w-full bg-transparent">
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-sm mb-4">
         <Link to={`/product/${product._id}`} className="block h-full w-full">
+          {/* Blur placeholder — shows instantly while full image loads */}
+          {blurUrl && !imgLoaded && (
+            <img
+              src={blurUrl}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl"
+            />
+          )}
           <img
-            src={getImageUrl(product.image)}
+            src={fullUrl}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            onLoad={() => setImgLoaded(true)}
+            className={`w-full h-full object-cover transition-all duration-500 ease-out group-hover:scale-105 ${imgLoaded ? 'opacity-100 blur-0' : 'opacity-0'
+              }`}
             loading="lazy"
+            decoding="async"
           />
         </Link>
 
@@ -74,33 +91,50 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
 
         </div>
 
-        {/* Floating Action Buttons (Always visible on mobile, hover reveal on desktop) */}
-        <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-4 sm:left-4 sm:right-4 translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300 ease-out flex gap-1 sm:gap-2">
+        {/* Floating Action Buttons — ALWAYS VISIBLE on every device */}
+        <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-3 sm:left-3 sm:right-3 md:bottom-3 md:left-3 md:right-3 lg:bottom-4 lg:left-4 lg:right-4 flex gap-1 sm:gap-1.5 md:gap-2">
           {!onEdit && !onDelete ? (
             <>
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className="flex-1 bg-white dark:bg-gray-900/95 sm:bg-white sm:dark:bg-gray-900 backdrop-blur sm:backdrop-filter-none text-black dark:text-white h-8 sm:h-10 uppercase text-[8px] sm:text-[10px] font-bold tracking-tight sm:tracking-widest hover:bg-black hover:dark:bg-gray-800 hover:text-white transition-colors shadow-sm sm:shadow-lg flex items-center justify-center gap-1 sm:gap-2"
+                className="flex-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur text-black dark:text-white
+                  h-7 text-[7px] gap-0.5
+                  sm:h-8 sm:text-[9px] sm:gap-1
+                  md:h-10 md:text-[10px] md:gap-1.5
+                  lg:h-10 lg:text-[10px]
+                  xl:h-11 xl:text-xs xl:gap-2
+                  uppercase font-bold tracking-wide
+                  hover:bg-black hover:dark:bg-gray-800 hover:text-white
+                  transition-colors shadow-md flex items-center justify-center rounded-sm
+                  disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <ShoppingBag className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                <span className="truncate">{product.stock === 0 ? 'Sold' : 'Add'}</span>
+                <ShoppingBag className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3 md:h-3 xl:w-3.5 xl:h-3.5 flex-shrink-0" />
+                <span className="truncate">{product.stock === 0 ? 'Sold Out' : 'Add to Cart'}</span>
               </button>
               {product.stock > 0 && (
                 <button
                   onClick={handleBuyNow}
-                  className="flex-1 bg-black dark:bg-yellow border border-transparent dark:border-white backdrop-blur sm:backdrop-filter-none text-white dark:text-white h-8 sm:h-10 uppercase text-[8px] sm:text-[10px] font-bold tracking-tight sm:tracking-widest hover:bg-[#fdc600] hover:text-black dark:hover:text-black transition-colors shadow-sm sm:shadow-lg flex items-center justify-center gap-1 sm:gap-2"
+                  className="flex-1 bg-black dark:bg-gray-900 border border-transparent dark:border-white/30 backdrop-blur text-white
+                    h-7 text-[7px] gap-0.5
+                    sm:h-8 sm:text-[9px] sm:gap-1
+                    md:h-10 md:text-[10px] md:gap-1.5
+                    lg:h-10 lg:text-[10px]
+                    xl:h-11 xl:text-xs xl:gap-2
+                    uppercase font-bold tracking-wide
+                    hover:bg-[#fdc600] hover:text-black
+                    transition-colors shadow-md flex items-center justify-center rounded-sm"
                 >
-                  <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                  <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3 md:h-3 xl:w-3.5 xl:h-3.5 flex-shrink-0" />
                   <span className="truncate">Buy Now</span>
                 </button>
               )}
             </>
           ) : (
             // Seller Edit/Delete Buttons
-            <div className="flex w-full gap-1 sm:gap-2">
-              {onEdit && <button onClick={() => onEdit(product)} className="flex-1 bg-white dark:bg-gray-900/95 sm:bg-white sm:dark:bg-gray-900 text-black dark:text-white h-8 sm:h-10 text-[9px] sm:text-xs font-bold hover:bg-black hover:dark:bg-gray-800 hover:text-white shadow-sm sm:shadow-lg backdrop-blur">Edit</button>}
-              {onDelete && <button onClick={() => onDelete(product._id)} className="flex-1 bg-red-600/95 sm:bg-red-600 text-white dark:text-white h-8 sm:h-10 text-[9px] sm:text-xs font-bold hover:bg-red-700 shadow-sm sm:shadow-lg backdrop-blur">Delete</button>}
+            <div className="flex w-full gap-1 sm:gap-1.5 md:gap-2">
+              {onEdit && <button onClick={() => onEdit(product)} className="flex-1 bg-white/95 dark:bg-gray-900/95 text-black dark:text-white h-7 sm:h-8 md:h-10 xl:h-11 text-[8px] sm:text-[10px] md:text-xs font-bold hover:bg-black hover:dark:bg-gray-800 hover:text-white shadow-md backdrop-blur rounded-sm">Edit</button>}
+              {onDelete && <button onClick={() => onDelete(product._id)} className="flex-1 bg-red-600 text-white h-7 sm:h-8 md:h-10 xl:h-11 text-[8px] sm:text-[10px] md:text-xs font-bold hover:bg-red-700 shadow-md backdrop-blur rounded-sm">Delete</button>}
             </div>
           )}
         </div>

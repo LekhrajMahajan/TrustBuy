@@ -18,8 +18,6 @@ const getBaseUrl = () => {
 
 const API_URL = getBaseUrl();
 
-console.log('🔌 Connecting to API:', API_URL); // Debug Log
-
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -63,7 +61,6 @@ export const productService = {
     // Add console log to debug response
     try {
       const response = await api.get('/products');
-      console.log("API Response (Products):", response.data);
       return response.data;
     } catch (error) {
       console.error("API Error:", error);

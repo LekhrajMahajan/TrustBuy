@@ -212,9 +212,10 @@ const HomePage = () => {
                     </div>
                     <div className="relative aspect-square bg-gray-800 rounded-lg overflow-hidden order-1 md:order-2">
                         <img
-                            src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=60&fm=webp&auto=compress&fit=crop"
                             alt="Banner"
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                            loading="lazy"
                         />
                     </div>
                 </div>
