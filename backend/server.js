@@ -19,12 +19,15 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
+  'https://trust-buy.vercel.app',
+  'https://trustbuy.vercel.app',
 ];
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (mobile apps, curl, Postman, etc.)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    // Allow any vercel.app subdomain (covers preview deployments too)
+    if (allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -56,6 +59,7 @@ app.use('/api/orders', require('./routes/orderRoutes'));
 startPriceScheduler();
 
 app.get('/', (req, res) => res.send('API is running...'));
+app.get('/api/ping', (req, res) => res.status(200).json({ status: 'ok', timestamp: Date.now() }));
 
 app.use(notFound);
 app.use(errorHandler);

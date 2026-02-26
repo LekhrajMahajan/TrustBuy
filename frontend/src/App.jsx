@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import { useAuth } from './hooks/useAuth';
 import { CartProvider } from './context/CartContext';
 import { Toaster } from 'sonner';
+import useServerWakeup from './hooks/useServerWakeup';
 
 // Lazy Loaded Pages
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -37,6 +38,8 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const App = () => {
+  useServerWakeup();
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f11] text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
       <CartProvider>

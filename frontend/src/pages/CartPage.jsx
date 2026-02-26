@@ -1,15 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { userService } from '../services/api';
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, MapPin } from 'lucide-react';
 import { getImageUrl } from '../utils/helpers';
+import { toast } from 'sonner';
 
 const CartPage = () => {
   const { cartItems, removeFromCart, updateQty, itemsPrice, taxPrice, shippingPrice, totalPrice } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
+  const [checkingProfile, setCheckingProfile] = useState(false);
 
-  const handleCheckout = () => {
-    navigate('/payment');
+  const handleCheckout = async () => {
+    if (!user) {
+      toast.error("Please login to proceed.");
+      navigate('/login');
+      return;
+    }
+
+    setCheckingProfile(true);
+    try {
+      // Fetch fresh profile to check address fields
+      const profile = await userService.getProfile();
+      const missingFields = [];
+      if (!profile.address?.trim()) missingFields.push('Address');
+      if (!profile.city?.trim()) missingFields.push('City');
+      if (!profile.pincode?.trim()) missingFields.push('Pincode');
+
+      if (missingFields.length > 0) {
+        toast.error(`Please complete your profile before checkout.`, {
+          description: `Missing: ${missingFields.join(', ')}. Go to Profile → Edit to add these.`,
+          duration: 5000,
+          action: {
+            label: 'Go to Profile',
+            onClick: () => navigate('/profile'),
+          },
+        });
+        return;
+      }
+
+      navigate('/payment');
+    } catch (err) {
+      // If profile fetch fails (network etc.), allow checkout anyway
+      navigate('/payment');
+    } finally {
+      setCheckingProfile(false);
+    }
   };
 
   if (cartItems.length === 0) {
@@ -106,11 +144,18 @@ const CartPage = () => {
                 <span className="text-xl font-bold text-black dark:text-white">₹{totalPrice.toLocaleString('en-IN')}</span>
               </div>
 
+              {/* Address reminder banner */}
+              <div className="flex items-start gap-2 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded px-3 py-2 mb-4 text-xs text-amber-800 dark:text-amber-400">
+                <MapPin className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                <span>Delivery address is required. Make sure your <Link to="/profile" className="underline font-bold">profile</Link> has address, city &amp; pincode.</span>
+              </div>
+
               <button
                 onClick={handleCheckout}
-                className="w-full py-4 bg-black dark:bg-yellow border border-transparent dark:border-white text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-[#fdc600] hover:text-black dark:hover:text-black transition-all shadow-xl"
+                disabled={checkingProfile}
+                className="w-full py-4 bg-black dark:bg-yellow border border-transparent dark:border-white text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-[#fdc600] hover:text-black dark:hover:text-black transition-all shadow-xl disabled:opacity-70"
               >
-                Checkout
+                {checkingProfile ? 'Verifying...' : 'Checkout'}
               </button>
 
               <p className="text-[10px] text-gray-400 text-center mt-4 uppercase tracking-wide">

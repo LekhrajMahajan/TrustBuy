@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { CreditCard, Truck, ShieldCheck, Lock, ArrowLeft, QrCode, Wallet, Check } from 'lucide-react';
-import { orderService } from '../services/api';
+import { orderService, userService } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 
 const PaymentPage = () => {
@@ -22,6 +22,27 @@ const PaymentPage = () => {
   useEffect(() => {
     if (cartItems.length === 0) navigate('/');
   }, [cartItems, navigate]);
+
+  // Guard: redirect to profile if delivery address is incomplete
+  useEffect(() => {
+    const checkProfile = async () => {
+      try {
+        const profile = await userService.getProfile();
+        const missing = [];
+        if (!profile.address?.trim()) missing.push('Address');
+        if (!profile.city?.trim()) missing.push('City');
+        if (!profile.pincode?.trim()) missing.push('Pincode');
+        if (missing.length > 0) {
+          toast.error('Complete your profile to checkout', {
+            description: `Missing: ${missing.join(', ')}`,
+            duration: 5000,
+          });
+          navigate('/profile');
+        }
+      } catch (_) { /* allow if fetch fails */ }
+    };
+    if (user) checkProfile();
+  }, [user, navigate]);
 
   if (cartItems.length === 0) return null;
 
