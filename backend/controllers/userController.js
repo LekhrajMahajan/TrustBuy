@@ -89,6 +89,7 @@ const registerSeller = async (req, res) => {
         businessName: req.body.businessName,
         gstin: req.body.gstin,
         pickupAddress: req.body.pickupAddress,
+        document: req.body.document,
         status: 'pending' // Force status to pending for review
       };
 

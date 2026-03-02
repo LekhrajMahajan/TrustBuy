@@ -66,7 +66,13 @@ const MyOrdersPage = () => {
                     </div>
                     <div>
                       <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Status</span>
-                      <span className="font-bold uppercase text-[10px] bg-black dark:bg-black border border-transparent dark:border-white text-white dark:text-white px-2 py-0.5 rounded-sm">Processing</span>
+                      {order.isCancelled ? (
+                        <span className="font-bold uppercase text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-transparent dark:border-red-800 px-2 py-0.5 rounded-sm">Cancelled</span>
+                      ) : (
+                        <span className="font-bold uppercase text-[10px] bg-black dark:bg-black border border-transparent dark:border-white text-white dark:text-white px-2 py-0.5 rounded-sm">
+                          {order.isDelivered ? 'Delivered' : order.isPaid ? 'Processing' : 'Pending'}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="text-right">

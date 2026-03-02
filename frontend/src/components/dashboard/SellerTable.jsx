@@ -127,9 +127,24 @@ const SellerTable = () => {
                     <div className="font-semibold text-gray-900 dark:text-gray-100">{seller.name}</div>
                     <div className="text-xs text-gray-500 dark:text-gray-400">{seller.email}</div>
                     {/* Show Business Info if available */}
-                    {(seller.businessName || seller.gstin) && (
-                      <div className="mt-1 text-[10px] text-indigo-600 bg-indigo-50 inline-block px-1 rounded border border-indigo-100 uppercase font-bold tracking-wider">
-                        {seller.businessName || 'Business Info'} {seller.gstin ? `(GST: ${seller.gstin})` : ''}
+                    {(seller.businessName || seller.gstin || seller.document) && (
+                      <div className="mt-1 flex flex-wrap gap-2 items-center">
+                        {(seller.businessName || seller.gstin) && (
+                          <div className="text-[10px] text-indigo-600 bg-indigo-50 inline-block px-1 rounded border border-indigo-100 uppercase font-bold tracking-wider">
+                            {seller.businessName || 'Business Info'} {seller.gstin ? `(Justin: ${seller.gstin})` : ''}
+                          </div>
+                        )}
+                        {seller.document && (
+                          <a
+                            href={seller.document.startsWith('data:') ? seller.document : seller.document}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[10px] text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors inline-flex items-center gap-1 px-2 py-0.5 rounded border border-blue-100 uppercase font-bold tracking-wider"
+                            title="View Attached Document"
+                          >
+                            <AlertCircle className="w-3 h-3" /> View Doc
+                          </a>
+                        )}
                       </div>
                     )}
                   </td>

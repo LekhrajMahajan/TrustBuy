@@ -1,5 +1,6 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ReactLenis } from 'lenis/react';
 import Navbar from './components/Navbar';
 import { useAuth } from './hooks/useAuth';
 import { CartProvider } from './context/CartContext';
@@ -41,96 +42,98 @@ const App = () => {
   useServerWakeup();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f11] text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
-      <CartProvider>
-        {/* Add Toaster here (top-center aligns with your request) */}
-        <Toaster
-          position="top-center"
-          richColors
-          toastOptions={{
-            actionButtonStyle: {
-              background: '#fdc600',
-              color: 'black',
-              fontWeight: 'bold',
-            }
-          }}
-        />
+    <ReactLenis root>
+      <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f11] text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
+        <CartProvider>
+          {/* Add Toaster here (top-center aligns with your request) */}
+          <Toaster
+            position="top-center"
+            richColors
+            toastOptions={{
+              actionButtonStyle: {
+                background: '#fdc600',
+                color: 'black',
+                fontWeight: 'bold',
+              }
+            }}
+          />
 
-        <Navbar />
-        <Suspense fallback={
-          <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-            <div className="w-8 h-8 border-4 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        }>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
+          <Navbar />
+          <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+              <div className="w-8 h-8 border-4 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          }>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
 
-            {/* Full Shop Page */}
-            <Route path="/shop" element={<ShopPage />} />
-            <Route path="/shop/phones" element={<Phones />} />
-            <Route path="/shop/laptops" element={<Laptops />} />
-            <Route path="/shop/audio" element={<Audio />} />
-            <Route path="/shop/mens-wear" element={<MensWear />} />
-            <Route path="/shop/womens-wear" element={<WomensWear />} />
-            <Route path="/shop/accessories" element={<Accessories />} />
-            <Route path="/shop/new-arrivals" element={<NewArrivals />} />
+              {/* Full Shop Page */}
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/shop/phones" element={<Phones />} />
+              <Route path="/shop/laptops" element={<Laptops />} />
+              <Route path="/shop/audio" element={<Audio />} />
+              <Route path="/shop/mens-wear" element={<MensWear />} />
+              <Route path="/shop/womens-wear" element={<WomensWear />} />
+              <Route path="/shop/accessories" element={<Accessories />} />
+              <Route path="/shop/new-arrivals" element={<NewArrivals />} />
 
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/cart" element={<CartPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/cart" element={<CartPage />} />
 
-            <Route path="/product/:id" element={
-              <ProtectedRoute>
-                <ProductDetailsPage />
-              </ProtectedRoute>
-            } />
+              <Route path="/product/:id" element={
+                <ProtectedRoute>
+                  <ProductDetailsPage />
+                </ProtectedRoute>
+              } />
 
-            <Route path="/seller/dashboard" element={
-              <ProtectedRoute>
-                <SellerDashboard />
-              </ProtectedRoute>
-            } />
+              <Route path="/seller/dashboard" element={
+                <ProtectedRoute>
+                  <SellerDashboard />
+                </ProtectedRoute>
+              } />
 
-            <Route path="/dashboard/*" element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } />
+              <Route path="/dashboard/*" element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } />
 
-            <Route path="/payment" element={
-              <ProtectedRoute>
-                <PaymentPage />
-              </ProtectedRoute>
-            } />
+              <Route path="/payment" element={
+                <ProtectedRoute>
+                  <PaymentPage />
+                </ProtectedRoute>
+              } />
 
-            <Route path="/order-success" element={
-              <ProtectedRoute>
-                <OrderSuccessPage />
-              </ProtectedRoute>
-            } />
+              <Route path="/order-success" element={
+                <ProtectedRoute>
+                  <OrderSuccessPage />
+                </ProtectedRoute>
+              } />
 
-            <Route path="/orders" element={
-              <ProtectedRoute>
-                <MyOrdersPage />
-              </ProtectedRoute>
-            } />
+              <Route path="/orders" element={
+                <ProtectedRoute>
+                  <MyOrdersPage />
+                </ProtectedRoute>
+              } />
 
-            <Route path="/order-tracking/:id" element={
-              <ProtectedRoute>
-                <OrderTrackingPage />
-              </ProtectedRoute>
-            } />
+              <Route path="/order-tracking/:id" element={
+                <ProtectedRoute>
+                  <OrderTrackingPage />
+                </ProtectedRoute>
+              } />
 
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            } />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              } />
 
-          </Routes>
-        </Suspense>
-      </CartProvider>
-    </div>
+            </Routes>
+          </Suspense>
+        </CartProvider>
+      </div>
+    </ReactLenis>
   );
 };
 

@@ -53,4 +53,33 @@ const getOrderById = async (req, res) => {
   }
 };
 
-module.exports = { addOrderItems, getMyOrders, getOrderById };
+const cancelOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      if (order.user.toString() !== req.user._id.toString() && !req.user.isAdmin) {
+        res.status(401);
+        throw new Error('Not authorized to cancel this order');
+      }
+
+      if (order.isDelivered) {
+        res.status(400);
+        throw new Error('Cannot cancel a delivered order');
+      }
+
+      order.isCancelled = true;
+      order.cancelledAt = Date.now();
+
+      const updatedOrder = await order.save();
+      res.json(updatedOrder);
+    } else {
+      res.status(404);
+      throw new Error('Order not found');
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { addOrderItems, getMyOrders, getOrderById, cancelOrder };

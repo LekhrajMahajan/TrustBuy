@@ -19,6 +19,7 @@ const SellerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageInputType, setImageInputType] = useState('url');
+  const [docInputType, setDocInputType] = useState('file');
 
   const [editingId, setEditingId] = useState(null);
   const [productData, setProductData] = useState({
@@ -27,7 +28,7 @@ const SellerDashboard = () => {
 
   // Seller Application State
   const [applicationData, setApplicationData] = useState({
-    businessName: '', gstin: '', pickupAddress: ''
+    businessName: '', gstin: '', pickupAddress: '', document: ''
   });
 
   const fetchMyProducts = async () => {
@@ -89,6 +90,15 @@ const SellerDashboard = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => setProductData({ ...productData, image: reader.result });
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDocUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setApplicationData({ ...applicationData, document: reader.result });
       reader.readAsDataURL(file);
     }
   };
@@ -184,11 +194,24 @@ const SellerDashboard = () => {
               </div>
               <div>
                 <label className={labelClass}>GSTIN / Tax ID</label>
-                <input type="text" required className={inputClass} placeholder="e.g. 29ABCDE1234F1Z5" value={applicationData.gstin} onChange={e => setApplicationData({ ...applicationData, gstin: e.target.value })} />
+                <input type="text" required maxLength="15" minLength="15" pattern="[A-Z0-9]{15}" title="Must be exactly 15 alphanumeric characters" className={inputClass} placeholder="e.g. 29ABCDE1234F1Z5" value={applicationData.gstin} onChange={e => setApplicationData({ ...applicationData, gstin: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '') })} />
               </div>
               <div>
                 <label className={labelClass}>Pickup Address</label>
                 <textarea rows="3" required className={inputClass} placeholder="Warehouse address..." value={applicationData.pickupAddress} onChange={e => setApplicationData({ ...applicationData, pickupAddress: e.target.value })}></textarea>
+              </div>
+              <div>
+                <label className={labelClass}>Upload Documents</label>
+                <div className="flex gap-2 mt-2 mb-2">
+                  <button type="button" onClick={() => setDocInputType('file')} className={`text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 rounded transition-colors ${docInputType === 'file' ? 'bg-black dark:bg-gray-800 text-white dark:text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300'}`}>Upload File</button>
+                  <button type="button" onClick={() => setDocInputType('url')} className={`text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 rounded transition-colors ${docInputType === 'url' ? 'bg-black dark:bg-gray-800 text-white dark:text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300'}`}>Link / URL</button>
+                </div>
+                {docInputType === 'url' ? (
+                  <input type="url" className={inputClass} placeholder="https://..." value={applicationData.document} onChange={e => setApplicationData({ ...applicationData, document: e.target.value })} />
+                ) : (
+                  <input type="file" required={!applicationData.document} className="block w-full px-2 py-2 text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:uppercase file:bg-black dark:bg-gray-800 file:text-white dark:text-white hover:file:bg-[#fdc600] hover:file:text-black transition-all cursor-pointer" accept="image/*,.pdf" onChange={handleDocUpload} />
+                )}
+                {applicationData.document && docInputType === 'file' && <p className="text-xs text-green-600 mt-2">✓ Document attached</p>}
               </div>
               <button type="submit" disabled={isSubmitting} className="w-full bg-black dark:bg-gray-800 text-white dark:text-white py-4 rounded-lg font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-colors">
                 {isSubmitting ? 'Submitting Application...' : 'Submit Application'}

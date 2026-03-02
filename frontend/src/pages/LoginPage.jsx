@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -13,6 +13,8 @@ const LoginPage = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
   const { login, googleLogin } = useAuth();
 
+  const navigate = useNavigate();
+
   // Email/password login
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,11 @@ const LoginPage = () => {
 
     if (result.success) {
       toast.success("Successfully Logged In!");
+      // Double ensure navigation for admin
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      if (userInfo?.role === 'admin') {
+        navigate('/dashboard');
+      }
     } else {
       toast.error("Login Failed", { description: result.message });
     }
@@ -63,7 +70,7 @@ const LoginPage = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
+                className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
                 placeholder="name@example.com"
               />
             </div>
@@ -75,7 +82,7 @@ const LoginPage = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm pr-10"
+                  className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm pr-10"
                   placeholder="••••••••"
                 />
                 <button
@@ -102,7 +109,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="group relative flex w-full justify-center bg-black dark:bg-black border border-transparent dark:border-white px-4 py-4 text-sm font-bold text-white dark:text-white uppercase tracking-widest hover:bg-gray-800 transition-all disabled:opacity-70"
+            className="group relative flex w-full justify-center bg-black dark:hover:bg-[#fdc600] dark:hover:text-black border border-transparent dark:border-white px-4 py-4 text-sm font-bold text-white dark:text-white uppercase tracking-widest hover:bg-gray-800 transition-all disabled:opacity-70"
           >
             {loading ? <Loader2 className="animate-spin w-5 h-5" /> : 'Sign In'}
           </button>
@@ -117,7 +124,7 @@ const LoginPage = () => {
           type="button"
           onClick={() => handleGoogleLogin()}
           disabled={googleLoading}
-          className="w-full border border-gray-200 dark:border-white py-3 flex items-center justify-center gap-3 text-sm font-bold hover:bg-gray-50 dark:bg-black dark:text-white transition-colors disabled:opacity-70"
+          className="w-full border border-gray-200 dark:hover:bg-[#fdc600] dark:hover:text-black py-3 flex items-center justify-center gap-3 text-sm font-bold hover:bg-gray-50 dark:bg-black dark:text-white transition-colors disabled:opacity-70"
         >
           {googleLoading ? (
             <Loader2 className="animate-spin w-5 h-5" />

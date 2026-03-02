@@ -105,7 +105,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                   lg:h-10 lg:text-[10px]
                   xl:h-11 xl:text-xs xl:gap-2
                   uppercase font-bold tracking-wide
-                  hover:bg-black hover:dark:bg-gray-800 hover:text-white
+                  hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black
                   transition-colors shadow-md flex items-center justify-center rounded-sm
                   disabled:opacity-60 disabled:cursor-not-allowed"
               >
@@ -122,7 +122,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                     lg:h-10 lg:text-[10px]
                     xl:h-11 xl:text-xs xl:gap-2
                     uppercase font-bold tracking-wide
-                    hover:bg-[#fdc600] hover:text-black
+                    hover:bg-[#fdc600] hover:text-black dark:hover:bg-[#fdc600] dark:hover:text-black
                     transition-colors shadow-md flex items-center justify-center rounded-sm"
                 >
                   <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3 md:h-3 xl:w-3.5 xl:h-3.5 flex-shrink-0" />

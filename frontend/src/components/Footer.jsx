@@ -14,7 +14,7 @@ const Footer = () => {
                             <img
                                 src={`${import.meta.env.BASE_URL}logo.png`}
                                 alt="TrustBuy Logo"
-                                className="h-16 md:h-20 lg:h-24 w-auto object-contain bg-white dark:bg-gray-900 rounded-lg shadow-lg p-2 md:p-4 transform hover:scale-105 transition-transform"
+                                className="h-16 md:h-20 lg:h-24 w-auto object-contain bg-white rounded-lg shadow-lg p-2 md:p-4 transform hover:scale-105 transition-transform"
                             />
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed">
@@ -78,11 +78,6 @@ const Footer = () => {
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                         © {new Date().getFullYear()} TrustBuy Inc. All rights reserved.
                     </p>
-                    <div className="flex gap-6">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" className="h-6 opacity-50 hover:opacity-100 transition" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-6 opacity-50 hover:opacity-100 transition" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className="h-6 opacity-50 hover:opacity-100 transition" />
-                    </div>
                 </div>
             </div>
         </footer>

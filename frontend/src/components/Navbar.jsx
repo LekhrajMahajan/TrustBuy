@@ -69,7 +69,7 @@ const Navbar = () => {
               <img
                 src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="TrustBuy Logo"
-                className="h-14 md:h-20 lg:h-24 w-auto object-contain transform scale-[1.3] md:scale-150 origin-left"
+                className="h-10 md:h-16 lg:h-16 w-auto object-contain origin-left"
               />
             </Link>
           </div>

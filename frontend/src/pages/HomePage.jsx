@@ -5,32 +5,9 @@ import { Link } from 'react-router-dom';
 import { productService } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react';
 
 const BASE = import.meta.env.BASE_URL; // '/' locally, '/TrustBuy/' on GitHub Pages
-
-const heroImages = [
-    {
-        url: `${BASE}hero/slide1.jpg`,
-        title: "Define Your Style.",
-        subtitle: "Shop The Collection"
-    },
-    {
-        url: `${BASE}hero/slide2.jpg`,
-        title: "Future Tech.",
-        subtitle: "Upgrade Your Workflow"
-    },
-    {
-        url: `${BASE}hero/slide3.jpg`,
-        title: "Urban Living.",
-        subtitle: "Essentials For You"
-    },
-    {
-        url: `${BASE}hero/slide4.jpg`,
-        title: "Refined Classics.",
-        subtitle: "Discover Men's Wear"
-    }
-];
 
 const categoryImages = {
     'Bags': "https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
@@ -44,7 +21,6 @@ const categoryImages = {
 const HomePage = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
         let cancelled = false;
@@ -74,17 +50,6 @@ const HomePage = () => {
         };
     }, []);
 
-    // Automatic Slider
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-        }, 5000); // Change every 5 seconds
-        return () => clearInterval(timer);
-    }, []);
-
-    const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
-
     const trending = products.slice(0, 4);
     const newArrivals = products.slice(4, 8);
 
@@ -92,67 +57,94 @@ const HomePage = () => {
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
 
-            {/* Pre-cache all hero images so slide transitions are instant */}
-            <div className="hidden" aria-hidden="true">
-                {heroImages.map((img, i) => (
-                    <img key={i} src={img.url} alt="" fetchPriority={i === 0 ? "high" : "low"} />
-                ))}
-            </div>
+            {/* 1. New Hero Section (GroVest Inspired) */}
+            <section className="relative w-full overflow-hidden bg-white dark:bg-gray-900 pt-14 pb-12 md:pt-16 md:pb-20">
+                {/* Decorative Background Blob */}
+                <div className="absolute top-0 right-0 w-[100%] md:w-[60%] lg:w-[50%] h-[120%] bg-gradient-to-bl from-[#fff4cc] to-[#ffea99] dark:from-[#fdc600]/20 dark:to-yellow-700/20 opacity-50 md:rounded-l-[150px] z-0 transform translate-x-1/4 -translate-y-10"></div>
 
-            {/* 1. Hero Section (Slider) */}
-            <section className="relative h-[70vh] md:h-[85vh] w-full bg-[#f3f3f3] overflow-hidden flex items-center justify-center">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={currentSlide}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 1 }}
-                        className="absolute inset-0"
-                    >
-                        <img
-                            src={heroImages[currentSlide].url}
-                            alt="Hero"
-                            className="w-full h-full object-cover opacity-90"
-                            fetchPriority="high"
-                            loading="eager"
-                        />
-                        <div className="absolute inset-0 bg-black/40 dark:bg-black/50"></div>
-                    </motion.div>
-                </AnimatePresence>
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-                {/* Slider Controls */}
-                <button onClick={prevSlide} className="absolute left-2 md:left-4 z-20 p-2 text-white dark:text-white hover:bg-white dark:bg-gray-900/20 rounded-full transition"><ChevronLeft className="w-6 h-6 md:w-8 md:h-8" /></button>
-                <button onClick={nextSlide} className="absolute right-2 md:right-4 z-20 p-2 text-white dark:text-white hover:bg-white dark:bg-gray-900/20 rounded-full transition"><ChevronRight className="w-6 h-6 md:w-8 md:h-8" /></button>
+                    {/* Left Content */}
+                    <div className="max-w-2xl pt-4">
+                        <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] text-[#141312] dark:text-white leading-[1.05] tracking-tight mb-6 mt-4 font-sans font-black">
+                            Best deal for <br className="hidden md:block" /> your shopping
+                        </h1>
+                        <p className="text-gray-700 dark:text-gray-300 text-lg md:text-[1.1rem] mb-10 max-w-[400px] leading-relaxed font-medium">
+                            Get promos and special offers just by shopping here.<br />
+                            Available for delivery 24 hours!
+                        </p>
 
-                <div className="relative z-10 text-center text-white dark:text-white px-4 max-w-4xl">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={currentSlide}
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: -20, opacity: 0 }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-4 md:mb-6 text-shadow-lg leading-tight">
-                                {heroImages[currentSlide].title}
-                            </h1>
-                            <Link to="/shop" className="inline-block bg-white dark:bg-gray-900 text-black dark:text-white px-6 py-3 md:px-10 md:py-4 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs hover:bg-[#fdc600] transition-colors shadow-xl">
-                                {heroImages[currentSlide].subtitle}
+                        <div className="flex flex-wrap items-center gap-6 mb-12">
+                            <Link to="/shop" className="bg-[#fdc600] hover:bg-[#eab300] text-gray-900 px-10 py-3.5 rounded-full font-bold transition-all shadow-md hover:shadow-lg text-lg tracking-wide">
+                                Shop Now
                             </Link>
-                        </motion.div>
-                    </AnimatePresence>
-                </div>
+                            <Link to="/about" className="text-gray-900 dark:text-gray-300 font-bold text-lg hover:text-[#fdc600] dark:hover:text-[#fdc600] transition-colors tracking-wide">
+                                Learn More
+                            </Link>
+                        </div>
 
-                {/* Dots */}
-                <div className="absolute bottom-6 md:bottom-8 flex gap-2 z-20">
-                    {heroImages.map((_, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => setCurrentSlide(idx)}
-                            className={`w-2 h-2 rounded-full transition-all ${currentSlide === idx ? 'bg-[#fdc600] w-6' : 'bg-white dark:bg-gray-900/50 hover:bg-white dark:bg-gray-900'}`}
-                        />
-                    ))}
+                        {/* Categories */}
+                        <div className="flex flex-wrap gap-4 max-w-lg">
+                            <div className="flex items-center gap-2.5 bg-white/80 hover:bg-white dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 px-5 py-2.5 rounded-full shadow-sm transition-colors cursor-pointer text-sm font-bold text-gray-800 dark:text-gray-200">
+                                👜 <span>Premium Bags</span>
+                            </div>
+                            <div className="flex items-center gap-2.5 bg-white/80 hover:bg-white dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 px-5 py-2.5 rounded-full shadow-sm transition-colors cursor-pointer text-sm font-bold text-gray-800 dark:text-gray-200">
+                                👕 <span>Fashion Apparel</span>
+                            </div>
+                            <div className="flex items-center gap-2.5 bg-white/80 hover:bg-white dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 px-5 py-2.5 rounded-full shadow-sm transition-colors cursor-pointer text-sm font-bold text-gray-800 dark:text-gray-200">
+                                📱 <span>Smart Electronics</span>
+                            </div>
+                            <div className="flex items-center gap-2.5 bg-white/80 hover:bg-white dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 px-5 py-2.5 rounded-full shadow-sm transition-colors cursor-pointer text-sm font-bold text-gray-800 dark:text-gray-200">
+                                ⌚ <span>Watches & Shoes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Content - Hero Image with Floating Elements */}
+                    <div className="relative flex justify-center mt-6 lg:mt-0 lg:ml-auto w-full lg:w-[95%] xl:w-[90%]">
+                        {/* The underlying organic blobs */}
+                        <div className="absolute inset-0 flex items-center justify-center -z-10">
+                            <div className="w-[300px] h-[300px] md:w-[450px] md:h-[450px] bg-[#fef08a] dark:bg-[#fdc600]/20 rounded-full mix-blend-multiply dark:mix-blend-lighten filter blur-[60px] opacity-70 mt-10"></div>
+                            <div className="absolute w-[250px] h-[250px] md:w-[320px] md:h-[320px] bg-[#fde047] dark:bg-yellow-600/20 rounded-[100px] mix-blend-multiply dark:mix-blend-lighten filter blur-[50px] opacity-60 bottom-10 -right-4"></div>
+                        </div>
+
+                        {/* Main Image */}
+                        <div className="relative z-10 w-full max-w-[420px] lg:max-w-full lg:h-[600px] flex items-end justify-center rounded-[3rem] overflow-visible">
+                            <img
+                                src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=800&h=1000"
+                                alt="Shopping Happy"
+                                className="w-[90%] h-auto md:w-full md:h-full object-cover object-top rounded-[2rem] drop-shadow-2xl"
+                            />
+
+                            {/* Floating Review Card */}
+                            <div className="absolute -bottom-6 md:bottom-10 lg:bottom-12 -right-4 md:-right-8 bg-white dark:bg-gray-800/95 backdrop-blur-md p-3 md:p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 z-20 flex items-center gap-3 md:gap-4 md:min-w-[220px]">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="User" className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover shadow-sm" />
+                                <div>
+                                    <h4 className="text-xs md:text-sm font-bold text-gray-900 dark:text-white line-clamp-1">Sarah Jenkins</h4>
+                                    <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">Happy Shopper</p>
+                                    <div className="flex text-[#fdc600] text-[10px] md:text-sm mt-0.5 tracking-tighter">
+                                        ★★★★★
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Floating Cart Badge */}
+                            <div className="absolute top-12 md:top-20 -right-2 md:-right-8 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-3 md:p-4 rounded-2xl md:rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 z-20">
+                                <div className="w-8 h-8 md:w-10 md:h-10 text-[#fdc600] flex items-center justify-center">
+                                    <ShoppingCart size={32} strokeWidth={2.5} />
+                                </div>
+                            </div>
+
+                            {/* Floating Faces Badge */}
+                            <div className="absolute top-1/2 -translate-y-4 md:-translate-y-12 -left-6 md:-left-16 bg-white dark:bg-gray-800/95 p-1.5 md:p-2 pr-3 md:pr-4 rounded-full shadow-xl border border-white/50 dark:border-gray-700 z-20 flex items-center gap-2 md:gap-3">
+                                <div className="flex -space-x-2.5 md:-space-x-3">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop" className="w-7 h-7 md:w-9 md:h-9 rounded-full border-2 border-white dark:border-gray-800" alt="User" />
+                                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=50&h=50&fit=crop" className="w-7 h-7 md:w-9 md:h-9 rounded-full border-2 border-white dark:border-gray-800" alt="User" />
+                                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=50&h=50&fit=crop" className="w-7 h-7 md:w-9 md:h-9 rounded-full border-2 border-white dark:border-gray-800" alt="User" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 

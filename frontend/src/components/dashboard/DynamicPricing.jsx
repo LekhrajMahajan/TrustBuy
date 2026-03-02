@@ -8,7 +8,6 @@ import { TrendingUp, TrendingDown, AlertCircle, Zap, Lock, RotateCcw, DollarSign
 
 const DynamicPricing = () => {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [chartData, setChartData] = useState([
         { time: '10:00', price: 2000 },
         { time: '11:00', price: 2100 },
@@ -28,8 +27,6 @@ const DynamicPricing = () => {
                 setProducts(variedData);
             } catch (err) {
                 console.error("Failed to load pricing data", err);
-            } finally {
-                setLoading(false);
             }
         };
         loadData();
@@ -58,7 +55,7 @@ const DynamicPricing = () => {
                 return newData;
             });
 
-        }, 2000); // 2 seconds tick
+        }, 10); // 10ms tick
 
         return () => clearInterval(interval);
     }, []);
@@ -78,8 +75,6 @@ const DynamicPricing = () => {
         Stock: p.stock,
         Demand: p.sales
     }));
-
-    if (loading) return <div className="p-10 text-center">Loading Pricing Engine...</div>;
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -162,7 +157,7 @@ const DynamicPricing = () => {
 
             <div className="grid lg:grid-cols-3 gap-8">
                 {/* 🔹 PRICE CHANGE HISTORY CHART */}
-                <div className="lg:col-span-2 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+                <div className="lg:col-span-2 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-white">
                     <h3 className="text-sm font-bold uppercase text-gray-400 mb-6">Live Market Index</h3>
                     <div className="h-64 w-full">
                         <ResponsiveContainer width="100%" height="100%">
@@ -188,7 +183,7 @@ const DynamicPricing = () => {
                 </div>
 
                 {/* 🔹 DEMAND vs STOCK CHART */}
-                <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-White">
                     <h3 className="text-sm font-bold uppercase text-gray-400 mb-6">Top Products: Demand vs Stock</h3>
                     <div className="h-64 w-full">
                         <ResponsiveContainer width="100%" height="100%">

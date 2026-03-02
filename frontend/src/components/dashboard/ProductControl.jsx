@@ -16,7 +16,6 @@ import { getImageUrl } from '../../utils/helpers';
 
 const ProductControl = () => {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
 
     const fetchProducts = async () => {
@@ -26,8 +25,6 @@ const ProductControl = () => {
         } catch (error) {
             console.error(error);
             toast.error("Failed to load products");
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -99,20 +96,7 @@ const ProductControl = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200">
-                            {loading ? (
-                                [...Array(5)].map((_, i) => (
-                                    <tr key={i} className="animate-pulse">
-                                        <td className="px-6 py-4"><div className="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div></td>
-                                        <td className="px-6 py-4"></td>
-                                    </tr>
-                                ))
-                            ) : filteredProducts.length === 0 ? (
+                            {filteredProducts.length === 0 ? (
                                 <tr><td colSpan="8" className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">No products found.</td></tr>
                             ) : (
                                 filteredProducts.map((product) => {

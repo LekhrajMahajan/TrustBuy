@@ -124,7 +124,7 @@ const PaymentPage = () => {
     }
   };
 
-  const inputClass = "w-full border-b border-gray-200 dark:border-white py-3 text-sm text-black dark:text-white focus:border-black dark:focus:border-white focus:outline-none bg-transparent dark:bg-black placeholder:text-gray-300 transition-colors font-medium";
+  const inputClass = "w-full border-b border-gray-200 dark:border-white py-3 text-sm text-black dark:text-white focus:border-black dark:focus:border-white focus:outline-none bg-transparent placeholder:text-gray-300 transition-colors font-medium";
   const labelClass = "block text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-1";
 
   return (
@@ -217,11 +217,11 @@ const PaymentPage = () => {
               {method === 'upi' && (
                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 max-w-lg">
                   <h3 className="text-xl font-bold uppercase tracking-tight mb-6">Scan to Pay</h3>
-                  <div className="flex gap-8 items-start">
-                    <div className="p-2 border border-black dark:border-white inline-block">
+                  <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+                    <div className="p-2 border border-black dark:border-white dark:bg-white inline-block">
                       <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay" alt="QR" className="w-32 h-32 mix-blend-multiply" />
                     </div>
-                    <div className="flex-1 space-y-6">
+                    <div className="flex-1 w-full space-y-6">
                       <div>
                         <label className={labelClass}>UPI ID</label>
                         <input type="text" placeholder="user@bank" className={inputClass} value={upiId} onChange={(e) => setUpiId(e.target.value.trim())} />
@@ -278,7 +278,7 @@ const PaymentPage = () => {
               <button
                 onClick={handlePayment}
                 disabled={loading || !isFormValid()}
-                className="w-full py-4 bg-black dark:bg-black border border-transparent dark:border-white text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-[#fdc600] hover:text-black dark:hover:text-yellow transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex items-center justify-center gap-2"
+                className="w-full py-4 bg-black dark:hover:bg-[#fdc600] dark:hover:text-black border border-transparent dark:border-white text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-[#fdc600] hover:text-black dark:hover:text-yellow transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex items-center justify-center gap-2"
               >
                 {loading ? 'Processing...' : (method === 'cod' ? 'Place Order' : 'Pay Now')}
                 {!loading && <Check className="w-4 h-4" />}

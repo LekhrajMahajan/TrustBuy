@@ -29,7 +29,8 @@ const userSchema = mongoose.Schema({
     status: { type: String, enum: ['active', 'suspended', 'pending'], default: 'pending' },
     businessName: { type: String, default: '' },
     gstin: { type: String, default: '' },
-    pickupAddress: { type: String, default: '' }
+    pickupAddress: { type: String, default: '' },
+    document: { type: String, default: '' }
   }
 }, {
   timestamps: true

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { AuthContext } from './AuthContextValue';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { toast } from 'sonner';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -17,6 +18,22 @@ export const AuthProvider = ({ children }) => {
         const parsedUser = JSON.parse(userInfo);
         if (parsedUser && parsedUser.token) {
           setUser(parsedUser);
+
+          // Sync profile silently on load to grab recent approvals
+          api.get('/users/profile').then(({ data }) => {
+            const updatedUser = { ...parsedUser, ...data };
+            localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+            setUser(updatedUser);
+
+            // Notify if newly approved
+            if (updatedUser.role === 'seller' || updatedUser.sellerStats?.status === 'active') {
+              if (!localStorage.getItem('sellerApprovedNotified')) {
+                toast.success('Congratulations! Your seller application has been approved. You can now start selling!', { duration: 8000 });
+                localStorage.setItem('sellerApprovedNotified', 'true');
+              }
+            }
+          }).catch(err => console.error("Silent profile sync failed:", err));
+
         } else {
           localStorage.removeItem('userInfo');
           localStorage.removeItem('token');

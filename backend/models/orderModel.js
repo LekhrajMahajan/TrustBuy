@@ -32,6 +32,8 @@ const orderSchema = mongoose.Schema({
   paidAt: { type: Date },
   isDelivered: { type: Boolean, required: true, default: false },
   deliveredAt: { type: Date },
+  isCancelled: { type: Boolean, required: true, default: false },
+  cancelledAt: { type: Date },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

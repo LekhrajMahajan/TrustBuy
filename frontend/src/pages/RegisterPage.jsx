@@ -42,7 +42,7 @@ const RegisterPage = () => {
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
+                className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
                 placeholder="John Doe"
               />
             </div>
@@ -53,7 +53,7 @@ const RegisterPage = () => {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
+                className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
                 placeholder="name@example.com"
               />
             </div>
@@ -65,7 +65,7 @@ const RegisterPage = () => {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm pr-10"
+                  className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm pr-10"
                   placeholder="••••••••"
                 />
                 <button
@@ -82,10 +82,14 @@ const RegisterPage = () => {
               <input
                 type="tel"
                 required
+                maxLength="10"
+                minLength="10"
+                pattern="[0-9]{10}"
+                title="Please enter a valid 10-digit mobile number"
                 value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
-                placeholder="+91 98765 43210"
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
+                placeholder="9876543210"
               />
             </div>
             <div>
@@ -95,7 +99,7 @@ const RegisterPage = () => {
                 required
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
+                className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
                 placeholder="123 Main St"
               />
             </div>
@@ -107,7 +111,7 @@ const RegisterPage = () => {
                   required
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
+                  className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
                   placeholder="Mumbai"
                 />
               </div>
@@ -118,7 +122,7 @@ const RegisterPage = () => {
                   required
                   value={formData.pincode}
                   onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
-                  className="block w-full border-b border-gray-300 dark:border-white py-3 text-gray-900 dark:text-white dark:bg-black placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
+                  className="block w-full border-b border-gray-300 dark:border-white py-3 bg-transparent text-gray-900 dark:text-white placeholder:text-gray-300 focus:border-black dark:focus:border-white focus:outline-none transition-colors sm:text-sm"
                   placeholder="400001"
                 />
               </div>
@@ -128,7 +132,7 @@ const RegisterPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="group relative flex w-full justify-center bg-black dark:bg-black border border-transparent dark:border-white px-4 py-4 text-sm font-bold text-white dark:text-white uppercase tracking-widest hover:bg-gray-800 transition-all disabled:opacity-70"
+            className="group relative flex w-full justify-center bg-black dark:hover:bg-[#fdc600] dark:hover:text-black border border-transparent dark:border-white px-4 py-4 text-sm font-bold text-white dark:text-white uppercase tracking-widest hover:bg-gray-800 transition-all disabled:opacity-70"
           >
             {loading ? <Loader2 className="animate-spin w-5 h-5" /> : 'Create Account'}
           </button>

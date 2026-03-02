@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { adminService } from '../services/api';
+import { toast } from 'sonner';
 
 import {
   LayoutDashboard,
@@ -29,6 +31,25 @@ const AdminDashboard = () => {
     }
   }, [user, navigate]);
 
+  // Check for pending sellers
+  useEffect(() => {
+    const checkPendingSellers = async () => {
+      try {
+        const data = await adminService.getSellers();
+        const pendingCount = data.filter(s => s.status === 'pending' && (s.businessName || s.document)).length;
+        if (pendingCount > 0) {
+          toast.info(`${pendingCount} seller(s) waiting for document approval!`, { duration: 8000 });
+        }
+      } catch (err) {
+        // fail silently
+      }
+    };
+
+    if (user && user.role === 'admin') {
+      checkPendingSellers();
+    }
+  }, [user]);
+
   if (!user || user.role !== 'admin') return null; // Prevent flash
 
   // Sync state with URL: ?tab=overview
@@ -41,15 +62,15 @@ const AdminDashboard = () => {
 
 
   const navItems = [
-    { id: 'overview', label: 'Top Overview', icon: LayoutDashboard },
-    { id: 'pricing', label: 'Sales & Dynamic Pricing', icon: TrendingUp },
+    { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+    { id: 'pricing', label: 'Sales Pricing', icon: TrendingUp },
     { id: 'products', label: 'Product Control Panel', icon: Package },
-    { id: 'sellers', label: 'Seller Trust Monitoring', icon: Users },
-    { id: 'users', label: 'User & CSV Management', icon: Users },
+    { id: 'sellers', label: 'Seller Monitoring', icon: Users },
+    { id: 'users', label: 'User Details', icon: Users },
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="flex h-screen pt-[72px] bg-gray-50 dark:bg-gray-950">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <button
@@ -111,7 +132,7 @@ const AdminDashboard = () => {
         <header className="bg-white dark:bg-gray-900 shadow-sm h-16 flex items-center justify-between px-6">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="md:hidden text-gray-600 dark:text-gray-400 focus:outline-none hover:text-gray-900 dark:text-gray-100"
+            className="md:hidden text-gray-600 dark:text-gray-400 focus:outline-none hover:text-gray-900 dark:hover:text-gray-100"
             aria-label="Open sidebar"
           >
             <Menu className="w-6 h-6" aria-hidden="true" />
@@ -125,7 +146,7 @@ const AdminDashboard = () => {
         </header>
 
         {/* Dashboard Content */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6" data-lenis-prevent>
           {activeTab === 'overview' && <AnalyticsOverview />}
           {activeTab === 'users' && <UserDetails />}
           {activeTab === 'sellers' && <SellerTable />}

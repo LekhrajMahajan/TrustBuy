@@ -83,6 +83,7 @@ const getSellers = async (req, res) => {
       status: seller.sellerStats?.status || 'pending',
       businessName: seller.sellerStats?.businessName || '',
       gstin: seller.sellerStats?.gstin || '',
+      document: seller.sellerStats?.document || '',
       joinedAt: seller.createdAt
     }));
 
@@ -118,6 +119,7 @@ const exportSellersCSV = async (req, res) => {
       { label: 'Trust Score', value: 'sellerStats.trustScore' },
       { label: 'Rating', value: 'sellerStats.rating' },
       { label: 'Pickup Address', value: 'sellerStats.pickupAddress' },
+      { label: 'Document', value: 'sellerStats.document' },
       { label: 'Joined Date', value: 'createdAt' }
     ];
 
@@ -320,7 +322,8 @@ const exportUsersCSV = async (req, res) => {
       { label: 'Joined Date', value: 'createdAt' },
       { label: 'Seller Status', value: 'sellerStats.status' },
       { label: 'Business Name', value: 'sellerStats.businessName' },
-      { label: 'GSTIN', value: 'sellerStats.gstin' }
+      { label: 'GSTIN', value: 'sellerStats.gstin' },
+      { label: 'Document', value: 'sellerStats.document' }
     ];
     const opts = { fields };
 

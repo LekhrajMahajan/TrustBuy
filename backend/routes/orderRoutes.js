@@ -6,5 +6,6 @@ const { protect } = require('../middleware/authMiddleware');
 router.route('/').post(protect, addOrderItems);
 router.route('/myorders').get(protect, getMyOrders);
 router.route('/:id').get(protect, require('../controllers/orderController').getOrderById);
+router.route('/:id/cancel').put(protect, require('../controllers/orderController').cancelOrder);
 
 module.exports = router;
