@@ -7,7 +7,7 @@ const users = [
   {
     name: 'Admin User',
     email: 'admin@example.com',
-    password: hash('123'),
+    password: hash('175'),
     role: 'admin',
   },
   {

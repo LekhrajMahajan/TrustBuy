@@ -56,6 +56,19 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Response Interceptor to clear storage on 401 Unauthorized
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('token');
+      window.dispatchEvent(new Event('auth-error'));
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const productService = {
   getAllProducts: async () => {
     // Add console log to debug response

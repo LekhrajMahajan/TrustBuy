@@ -10,6 +10,17 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const handleAuthError = () => {
+      setUser(null);
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('token');
+    };
+    window.addEventListener('auth-error', handleAuthError);
+    return () => window.removeEventListener('auth-error', handleAuthError);
+  }, []);
+
+
+  useEffect(() => {
     // Check local storage on load (Session Persistence)
     try {
       const userInfo = localStorage.getItem('userInfo');
@@ -32,7 +43,14 @@ export const AuthProvider = ({ children }) => {
                 localStorage.setItem('sellerApprovedNotified', 'true');
               }
             }
-          }).catch(err => console.error("Silent profile sync failed:", err));
+          }).catch(err => {
+            console.error("Silent profile sync failed:", err);
+            if (err.response && err.response.status === 401) {
+              setUser(null);
+              localStorage.removeItem('userInfo');
+              localStorage.removeItem('token');
+            }
+          });
 
         } else {
           localStorage.removeItem('userInfo');
