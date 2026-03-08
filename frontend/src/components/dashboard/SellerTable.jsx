@@ -83,12 +83,6 @@ const SellerTable = () => {
     return { label: 'Pending', color: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20', icon: AlertTriangle };
   };
 
-  if (loading) return (
-    <div className="flex justify-center items-center h-64 text-indigo-600">
-      <div className="animate-spin rounded-full h-8 w-8 border-4 border-indigo-100 border-t-indigo-600 mb-4"></div>
-    </div>
-  );
-
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-950/50">
@@ -115,8 +109,10 @@ const SellerTable = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {sellers.length === 0 ? (
-              <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-400">No sellers found.</td></tr>
+            {loading ? (
+              <tr><td colSpan="7" className="px-6 py-8 text-center text-gray-400">Loading sellers...</td></tr>
+            ) : sellers.length === 0 ? (
+              <tr><td colSpan="7" className="px-6 py-8 text-center text-gray-400">No sellers found.</td></tr>
             ) : sellers.map((seller) => {
               const statusMeta = deriveStatus(seller.status);
               const isProcessing = actionLoading === seller._id;

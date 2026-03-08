@@ -44,11 +44,13 @@ export const AuthProvider = ({ children }) => {
               }
             }
           }).catch(err => {
-            console.error("Silent profile sync failed:", err);
             if (err.response && err.response.status === 401) {
+              // Token expired or invalid, silently handle (interceptor event will also trigger)
               setUser(null);
               localStorage.removeItem('userInfo');
               localStorage.removeItem('token');
+            } else {
+              console.error("Silent profile sync failed:", err);
             }
           });
 

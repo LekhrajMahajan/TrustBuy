@@ -55,7 +55,7 @@ const DynamicPricing = () => {
                 return newData;
             });
 
-        }, 10); // 10ms tick
+        }, 1500); // 1.5s tick
 
         return () => clearInterval(interval);
     }, []);
@@ -77,7 +77,7 @@ const DynamicPricing = () => {
     }));
 
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-150">
 
             {/* Header */}
             <div className="flex justify-between items-end">
@@ -101,7 +101,7 @@ const DynamicPricing = () => {
                     </h3>
                     <div className="space-y-4">
                         {gainers.length > 0 ? gainers.map(p => (
-                            <div key={p._id} className="flex justify-between items-center p-3 bg-green-50 rounded-lg transition-all duration-500">
+                            <div key={p._id} className="flex justify-between items-center p-3 bg-green-50 rounded-lg transition-all duration-150">
                                 <div>
                                     <div className="font-bold text-gray-900 dark:text-gray-100">{p.name}</div>
                                     <div className="text-xs text-green-700">Base: ₹{p.basePrice} → <span className="font-bold">₹{p.currentPrice.toFixed(0)}</span></div>
@@ -119,7 +119,7 @@ const DynamicPricing = () => {
                     </h3>
                     <div className="space-y-4">
                         {losers.length > 0 ? losers.map(p => (
-                            <div key={p._id} className="flex justify-between items-center p-3 bg-red-50 rounded-lg transition-all duration-500">
+                            <div key={p._id} className="flex justify-between items-center p-3 bg-red-50 rounded-lg transition-all duration-150">
                                 <div>
                                     <div className="font-bold text-gray-900 dark:text-gray-100">{p.name}</div>
                                     <div className="text-xs text-red-700">Base: ₹{p.basePrice} → <span className="font-bold">₹{p.currentPrice.toFixed(0)}</span></div>
@@ -207,13 +207,13 @@ const DynamicPricing = () => {
                     <AlertCircle className="w-4 h-4" /> Safety Overrides
                 </h3>
                 <div className="flex flex-wrap gap-4">
-                    <button className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-700 px-5 py-3 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 dark:bg-gray-800 transition-colors hover:shadow-md">
+                    <button className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-white text-gray-700 dark:text-white px-5 py-3 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 dark:bg-gray-800 transition-colors hover:shadow-md">
                         <Lock className="w-4 h-4" /> Freeze All Prices
                     </button>
-                    <button className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-700 px-5 py-3 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 dark:bg-gray-800 transition-colors hover:shadow-md">
+                    <button className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-white text-gray-700 dark:text-white px-5 py-3 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 dark:bg-gray-800 transition-colors hover:shadow-md">
                         <RotateCcw className="w-4 h-4" /> Reset Baseline
                     </button>
-                    <button className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-700 px-5 py-3 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 dark:bg-gray-800 transition-colors hover:shadow-md">
+                    <button className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-white text-gray-700 dark:text-white px-5 py-3 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 dark:bg-gray-800 transition-colors hover:shadow-md">
                         <DollarSign className="w-4 h-4" /> Set Ceilings
                     </button>
                 </div>

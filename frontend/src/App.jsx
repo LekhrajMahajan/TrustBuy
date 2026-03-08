@@ -49,6 +49,7 @@ const App = () => {
           <Toaster
             position="top-center"
             richColors
+            duration={5000}
             toastOptions={{
               actionButtonStyle: {
                 background: '#fdc600',

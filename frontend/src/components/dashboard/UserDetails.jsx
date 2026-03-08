@@ -64,12 +64,6 @@ const UserDetails = () => {
         setExpandedUser(expandedUser === userId ? null : userId);
     };
 
-    if (loading) return (
-        <div className="flex justify-center items-center h-64 text-indigo-600 font-medium animate-pulse">
-            Loading Users...
-        </div>
-    );
-
     return (
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -102,7 +96,9 @@ const UserDetails = () => {
                     />
                 </div>
 
-                {filteredUsers.length === 0 ? (
+                {loading ? (
+                    <div className="px-6 py-10 text-center text-gray-400 italic">Loading users...</div>
+                ) : filteredUsers.length === 0 ? (
                     <div className="px-6 py-10 text-center text-gray-400 italic">No users found.</div>
                 ) : (
                     <div className="divide-y divide-gray-100">
