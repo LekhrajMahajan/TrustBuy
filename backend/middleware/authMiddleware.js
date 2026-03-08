@@ -16,7 +16,8 @@ const protect = async (req, res, next) => {
       req.user = await User.findById(decoded.id).select('-password');
 
       if (!req.user) {
-        console.error("Middleware Error: User not found for ID:", decoded.id);
+        // Downgraded from console.error to avoid polluting the terminal with red errors during expected edge cases like expired sessions
+        console.log(`Auth Warning: Token rejected - User not found for ID: ${decoded.id}`);
         res.status(401).json({ message: 'Not authorized, user not found' });
         return;
       }
