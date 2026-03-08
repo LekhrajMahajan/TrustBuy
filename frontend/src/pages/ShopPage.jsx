@@ -85,6 +85,21 @@ const ShopPage = ({ initialCategory, initialSort }) => {
     loadProducts();
   }, [searchQuery, searchCategory, searchSort]);
 
+  // Dynamic SEO meta tags
+  useEffect(() => {
+    const category = searchCategory !== 'all' ? searchCategory : 'All Products';
+    document.title = `${category} — TrustBuy`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content',
+        `Shop ${category} on TrustBuy — verified sellers, best prices, and trusted quality.`
+      );
+    }
+    return () => {
+      document.title = 'TrustBuy — Shop Trusted Products Online';
+    };
+  }, [searchCategory, searchQuery]);
+
   const applyFilters = (latestSortOption = sortOption) => {
     let result = [...allProducts];
 
@@ -127,7 +142,12 @@ const ShopPage = ({ initialCategory, initialSort }) => {
           <div className="flex items-center gap-6">
             {/* Text-Based Sort Trigger */}
             <div className="relative z-20">
-              <button onClick={() => setIsSortOpen(!isSortOpen)} className="flex items-center gap-1 text-sm font-bold uppercase tracking-widest hover:text-[#fdc600] transition-colors">
+              <button
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                aria-label={`Sort by ${sortOption.replace(/-/g, ' ')}`}
+                aria-expanded={isSortOpen}
+                className="flex items-center gap-1 text-sm font-bold uppercase tracking-widest hover:text-[#fdc600] transition-colors"
+              >
                 Sort: <span className="border-b border-black dark:border-white pb-0.5">{sortOption.replace(/-/g, ' ')}</span> <ChevronDown className="w-3 h-3" />
               </button>
 
@@ -142,7 +162,11 @@ const ShopPage = ({ initialCategory, initialSort }) => {
               )}
             </div>
 
-            <button onClick={() => setIsFilterOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-gray-800 text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-all">
+            <button
+              onClick={() => setIsFilterOpen(true)}
+              aria-label="Open product filters"
+              className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-gray-800 text-white dark:text-white text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-all"
+            >
               <SlidersHorizontal className="w-3 h-3" /> Filter
             </button>
           </div>
@@ -181,20 +205,33 @@ const ShopPage = ({ initialCategory, initialSort }) => {
 
           <div className="px-8 py-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
             <h2 className="text-xl font-bold uppercase tracking-tight">Refine</h2>
-            <button onClick={() => setIsFilterOpen(false)}><X className="w-6 h-6 hover:rotate-90 transition-transform" /></button>
+            <button aria-label="Close filters" onClick={() => setIsFilterOpen(false)}><X className="w-6 h-6 hover:rotate-90 transition-transform" /></button>
           </div>
 
           <div className="p-8 space-y-10 flex-1 overflow-y-auto">
             <section>
-              <div className="flex justify-between mb-4"><h3 className="text-xs font-bold uppercase tracking-widest">Price Limit</h3><span className="text-xs font-mono">₹{filters.priceRange[1].toLocaleString()}</span></div>
-              <input type="range" min={0} max={200000} step={1000} value={filters.priceRange[1]} onChange={(e) => setFilters({ ...filters, priceRange: [0, parseInt(e.target.value)] })} className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-black" />
+              <div className="flex justify-between mb-4">
+                <label htmlFor="price-range" className="text-xs font-bold uppercase tracking-widest">Price Limit</label>
+                <span className="text-xs font-mono">₹{filters.priceRange[1].toLocaleString()}</span>
+              </div>
+              <input
+                id="price-range"
+                type="range"
+                min={0}
+                max={200000}
+                step={1000}
+                value={filters.priceRange[1]}
+                onChange={(e) => setFilters({ ...filters, priceRange: [0, parseInt(e.target.value)] })}
+                aria-label={`Price limit: ₹${filters.priceRange[1].toLocaleString()}`}
+                className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-black"
+              />
             </section>
 
             <section>
               <h3 className="text-xs font-bold uppercase tracking-widest mb-4">Category</h3>
               <div className="flex flex-wrap gap-2">
                 {categories.map(cat => (
-                  <button key={cat} onClick={() => setFilters({ ...filters, category: cat })} className={`px-4 py-2 border text-xs font-bold uppercase tracking-widest transition-all ${filters.category?.toLowerCase() === cat?.toLowerCase() ? 'bg-black dark:bg-gray-800 text-white dark:text-white border-black dark:border-white' : 'bg-transparent text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-black dark:border-white'}`}>
+                  <button key={cat} onClick={() => setFilters({ ...filters, category: cat })} aria-label={`Filter by ${cat}`} className={`px-4 py-2 border text-xs font-bold uppercase tracking-widest transition-all ${filters.category?.toLowerCase() === cat?.toLowerCase() ? 'bg-black dark:bg-gray-800 text-white dark:text-white border-black dark:border-white' : 'bg-transparent text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-black dark:hover:border-white'}`}>
                     {cat}
                   </button>
                 ))}

@@ -68,6 +68,8 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
           <img
             src={fullUrl}
             alt={product.name}
+            width={300}
+            height={400}
             onLoad={() => setImgLoaded(true)}
             className={`w-full h-full object-cover transition-all duration-500 ease-out group-hover:scale-105 ${imgLoaded ? 'opacity-100 blur-0' : 'opacity-0'
               }`}
@@ -98,6 +100,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
+                aria-label={product.stock === 0 ? `${product.name} is sold out` : `Add ${product.name} to cart`}
                 className="flex-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur text-black dark:text-white
                   h-7 text-[7px] gap-0.5
                   sm:h-8 sm:text-[9px] sm:gap-1
@@ -115,6 +118,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               {product.stock > 0 && (
                 <button
                   onClick={handleBuyNow}
+                  aria-label={`Buy ${product.name} now`}
                   className="flex-1 bg-black dark:bg-gray-900 border border-transparent dark:border-white/30 backdrop-blur text-white
                     h-7 text-[7px] gap-0.5
                     sm:h-8 sm:text-[9px] sm:gap-1
@@ -152,7 +156,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               ₹{currentPrice.toLocaleString('en-IN')}
             </span>
             {basePrice > currentPrice && (
-              <span className="text-gray-400 line-through text-xs">
+              <span className="text-gray-500 dark:text-gray-400 line-through text-xs" aria-label={`Original price ₹${basePrice.toLocaleString('en-IN')}`}>
                 ₹{basePrice.toLocaleString('en-IN')}
               </span>
             )}

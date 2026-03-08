@@ -36,6 +36,22 @@ const ProductDetailsPage = () => {
     fetchProduct();
   }, [id]);
 
+  // Dynamic SEO: title + meta description per product
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.name} — TrustBuy`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content',
+          `Buy ${product.name} on TrustBuy at ₹${product.currentPrice?.toLocaleString('en-IN')}. ${product.description?.slice(0, 100) || ''}`
+        );
+      }
+    }
+    return () => {
+      document.title = 'TrustBuy — Shop Trusted Products Online';
+    };
+  }, [product]);
+
   const submitReviewHandler = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -101,6 +117,10 @@ const ProductDetailsPage = () => {
             <img
               src={getImageUrl(product.image)}
               alt={product.name}
+              width={336}
+              height={438}
+              fetchpriority="high"
+              loading="eager"
               className="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300 drop-shadow-sm"
             />
           </div>
@@ -109,29 +129,29 @@ const ProductDetailsPage = () => {
           <div className="flex flex-col justify-between">
             <div className="space-y-6">
               <div>
-                <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">{product.name}</h1>
+                <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">{product.name}</h1>
                 <div className="flex items-center gap-3 mt-2">
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className={`w-5 h-5 ${i < Math.round(product.rating) ? 'fill-current' : 'text-gray-300'}`} />
                     ))}
                   </div>
-                  <span className="text-slate-500 text-sm font-medium">({product.numReviews} reviews)</span>
+                  <span className="text-slate-500 dark:text-slate-400 text-sm font-medium">({product.numReviews} reviews)</span>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <div className="text-4xl font-bold text-slate-900">
+                <div className="text-4xl font-bold text-slate-900 dark:text-white">
                   ₹{product.currentPrice?.toLocaleString('en-IN')}
                 </div>
                 {product.basePrice > product.currentPrice && (
-                  <div className="text-sm text-slate-500 line-through">
+                  <div className="text-sm text-slate-500 dark:text-slate-400 line-through">
                     M.R.P: ₹{product.basePrice?.toLocaleString('en-IN')}
                   </div>
                 )}
               </div>
 
-              <div className="prose prose-sm text-slate-600 leading-relaxed">
+              <div className="prose prose-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 <p>{product.description}</p>
               </div>
 
@@ -151,8 +171,9 @@ const ProductDetailsPage = () => {
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
+                aria-label={product.stock === 0 ? `${product.name} is out of stock` : `Add ${product.name} to cart`}
                 className={`flex-1 py-4 rounded-md font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] ${product.stock > 0
-                  ? 'bg-slate-900 text-white dark:text-white hover:bg-slate-800'
+                  ? 'bg-slate-900 text-white hover:bg-slate-800'
                   : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                   }`}
               >
@@ -163,7 +184,8 @@ const ProductDetailsPage = () => {
               {product.stock > 0 && (
                 <button
                   onClick={handleBuyNow}
-                  className="flex-1 py-4 rounded-md font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] bg-[#fdc600] text-black dark:text-black hover:bg-yellow-400"
+                  aria-label={`Buy ${product.name} now`}
+                  className="flex-1 py-4 rounded-md font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] bg-[#fdc600] text-black hover:bg-yellow-400"
                 >
                   <Zap className="w-5 h-5 fill-black" />
                   Buy Now
@@ -178,10 +200,10 @@ const ProductDetailsPage = () => {
 
           {/* Reviews List */}
           <div className={`lg:col-span-2 ${cardClass} p-8 h-fit`}>
-            <h2 className="text-xl font-bold text-slate-900 mb-6">Customer Reviews</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Customer Reviews</h2>
 
             {product.reviews.length === 0 ? (
-              <div className="text-center py-10 text-slate-500">
+              <div className="text-center py-10 text-slate-500 dark:text-slate-400">
                 <p>No reviews yet. Be the first to share your thoughts!</p>
               </div>
             ) : (
@@ -216,17 +238,18 @@ const ProductDetailsPage = () => {
           {/* Write Review Form (Updated Design) */}
           <div className="lg:col-span-1">
             <div className={`${cardClass} p-8 sticky top-24`}>
-              <h3 className="text-lg font-bold text-slate-900 mb-1">Write a Review</h3>
-              <p className="text-sm text-slate-500 mb-6">Share your experience with this product.</p>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Write a Review</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Share your experience with this product.</p>
 
               {user ? (
                 <form onSubmit={submitReviewHandler} className="space-y-5">
 
                   {/* Rating Select */}
                   <div>
-                    <label className={labelClass}>Rating</label>
+                    <label htmlFor="review-rating" className={labelClass}>Rating</label>
                     <div className="relative">
                       <select
+                        id="review-rating"
                         value={rating}
                         onChange={(e) => setRating(e.target.value)}
                         className={`${inputClass} appearance-none cursor-pointer`}
@@ -243,8 +266,9 @@ const ProductDetailsPage = () => {
 
                   {/* Comment Textarea */}
                   <div>
-                    <label className={labelClass}>Comment</label>
+                    <label htmlFor="review-comment" className={labelClass}>Comment</label>
                     <textarea
+                      id="review-comment"
                       rows="4"
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}

@@ -69,6 +69,8 @@ const Navbar = () => {
               <img
                 src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="TrustBuy Logo"
+                width={147}
+                height={48}
                 className="h-10 md:h-16 lg:h-16 w-auto object-contain origin-left"
               />
             </Link>
@@ -122,19 +124,19 @@ const Navbar = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
                 />
-                <button type="submit" className="ml-1 p-1">
+                <button type="submit" aria-label="Search" className="ml-1 p-1">
                   <Search className="w-4 h-4 text-gray-500 hover:text-black dark:hover:text-white transition-colors" />
                 </button>
-                <button type="button" onClick={() => setShowSearch(false)} className="ml-2 p-1">
+                <button type="button" aria-label="Close search" onClick={() => setShowSearch(false)} className="ml-2 p-1">
                   <X className="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors" />
                 </button>
               </form>
             ) : (
-              <button onClick={() => setShowSearch(true)} className="text-black dark:text-white hover:text-[#fdc600] transition-colors p-1">
+              <button aria-label="Open search" onClick={() => setShowSearch(true)} className="text-black dark:text-white hover:text-[#fdc600] transition-colors p-1">
                 <Search className="w-5 h-5" />
               </button>
             )}
-            <button onClick={toggleTheme} className="text-black dark:text-white hover:text-[#fdc600] transition-colors p-1" title="Toggle Theme">
+            <button onClick={toggleTheme} aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} className="text-black dark:text-white hover:text-[#fdc600] transition-colors p-1">
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
             <Link to="/cart" className="relative text-black dark:text-white hover:text-[#fdc600] transition-colors p-1">
@@ -149,7 +151,16 @@ const Navbar = () => {
               <Menubar className="border-none bg-transparent p-0">
                 <MenubarMenu>
                   <MenubarTrigger className="cursor-pointer p-0 bg-transparent data-[state=open]:bg-transparent focus:bg-transparent">
-                    <div className="w-8 h-8 rounded-full bg-black dark:bg-black border border-transparent dark:border-white text-white flex items-center justify-center text-xs font-bold hover:bg-gray-800 dark:hover:bg-gray-200 dark:hover:text-black transition">
+                    <div className="hidden md:flex items-center gap-2 border border-gray-300 dark:border-gray-600 rounded-full pl-1 pr-4 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                      <div className="w-7 h-7 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-xs font-bold">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-sm font-medium text-black dark:text-white whitespace-nowrap">
+                        Hello, {user.name.split(' ')[0]}
+                      </span>
+                    </div>
+                    {/* Mobile: only avatar */}
+                    <div className="md:hidden w-8 h-8 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-xs font-bold">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
                   </MenubarTrigger>
