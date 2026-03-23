@@ -1,3 +1,4 @@
+require('dns').setServers(['8.8.8.8']);
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Product = require('./models/productModel');
@@ -5,7 +6,12 @@ const User = require('./models/userModel');
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URI)
+let mongoUri = process.env.MONGO_URI;
+if (mongoUri && mongoUri.includes('Lekhraj@086')) {
+    mongoUri = mongoUri.replace('Lekhraj@086', 'Lekhraj%40086');
+}
+
+mongoose.connect(mongoUri)
   .then(async () => {
     console.log('MongoDB Connected');
     const productCount = await Product.countDocuments();
