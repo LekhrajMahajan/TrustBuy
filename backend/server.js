@@ -20,14 +20,26 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://trust-buy.vercel.app',
-  'https://trustbuy.vercel.app',
 ];
+
+// Add VITE_CLIENT_URL from .env if present
+if (process.env.VITE_CLIENT_URL) {
+  const clientUrl = process.env.VITE_CLIENT_URL.startsWith('http')
+    ? process.env.VITE_CLIENT_URL
+    : `https://${process.env.VITE_CLIENT_URL}`;
+  allowedOrigins.push(clientUrl);
+}
+
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (mobile apps, curl, Postman, etc.)
     if (!origin) return callback(null, true);
-    // Allow any vercel.app subdomain (covers preview deployments too)
-    if (allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
+
+    // Normalize origin (remove trailing slash)
+    const normalizedOrigin = origin.endsWith('/') ? origin.slice(0, -1) : origin;
+
+    // Allow any origin that is in allowedOrigins or a vercel.app subdomain
+    if (allowedOrigins.includes(normalizedOrigin) || /\.vercel\.app$/.test(normalizedOrigin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
