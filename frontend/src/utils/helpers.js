@@ -51,7 +51,7 @@ export const getImageUrl = (imagePath, width = 400) => {
     return imagePath;
   }
 
-  // Local path (e.g. /images/foo.png) — resolve against Vite base
+  // Local path (e.g. /img/foo.png) — resolve against Vite base
   const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
   const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
   return `${base}${cleanPath}`;
