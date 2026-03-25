@@ -11,13 +11,7 @@ const connectDB = require('./config/db');
 dotenv.config();
 
 // Connect to DB directly for this script
-let mongoUri = process.env.MONGO_URI;
-
-// Handle unencoded '@' in password if present
-if (mongoUri && mongoUri.includes('Lekhraj@086')) {
-  console.log('⚠️ Auto-correcting unencoded password in MONGO_URI (Seeder)...');
-  mongoUri = mongoUri.replace('Lekhraj@086', 'Lekhraj%40086');
-}
+const mongoUri = process.env.MONGO_URI;
 
 mongoose.connect(mongoUri)
   .then(() => console.log('MongoDB Connected for Seeding'))

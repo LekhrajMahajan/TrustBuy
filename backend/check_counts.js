@@ -6,10 +6,7 @@ const User = require('./models/userModel');
 
 dotenv.config();
 
-let mongoUri = process.env.MONGO_URI;
-if (mongoUri && mongoUri.includes('Lekhraj@086')) {
-    mongoUri = mongoUri.replace('Lekhraj@086', 'Lekhraj%40086');
-}
+const mongoUri = process.env.MONGO_URI;
 
 mongoose.connect(mongoUri)
   .then(async () => {

@@ -37,13 +37,7 @@ app.use(cors({
 
 // Database Connection
 // Database Connection
-let mongoUri = process.env.MONGO_URI;
-
-// FIX: Handle unencoded '@' in password if present
-if (mongoUri && mongoUri.includes('Lekhraj@086')) {
-  console.log('⚠️ Auto-correcting unencoded password in MONGO_URI...');
-  mongoUri = mongoUri.replace('Lekhraj@086', 'Lekhraj%40086');
-}
+const mongoUri = process.env.MONGO_URI;
 
 mongoose.connect(mongoUri)
   .then(() => console.log('MongoDB Connected'))
